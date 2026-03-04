@@ -1,0 +1,125 @@
+WHAT IS NETWORK ?
+====================
+
+1. A COMPUTER NETWORK IS GROUP OF COMPUTERS THAT USE A SET OF COMMON COMMUNICATION PROTOCOLS OVER DIGITAL INTERCONNECTION FOR THE 
+PURPOSE OF SHARING RESOURCES LOCATED ON OR PROVIDED BY THE NETWORK NODES.
+
+
+A PHYSICAL NETWORK NODE IS AN ELECTRONIC DEVICE THAT IS ATTACHED TO A NETWORK, AND IS CAPABLE OF CREATING , RECEIVING ,OR TRANSMITTING
+INFORMATION OVER A COMMUNICATION CHANNEL.
+
+ITS A METHOD/PROCESS OF TRANSFERRING DATA'S BETWEEN NODES OVER A COMMUNICATION MEDIUM WHICH MAY BY WIRED OR WIRELESS.
+
+2. DIFERRENCE BETWEEN INTERNET, INTRANET & EXTRANET ?
+
+
+INTERNET IS A GLOBAL COMMUNICATION SYSTEM , USED FOR COMMONICATING WITH THE WHOLE WORLD. 
+
+THE INTERNET SOMETIMES CALLED SIMPLY "THE NET", IS A WORLDWIDE SYSTEM OF COMPUTER NETWORKS-- A NETWORK OF NETWORKS IN WHICH USERS AT ANY ONE COMPUTER CAN , IF THEY HAVE PERMISSION,
+GET INFORMATION FROM ANY OTHER COMPUTER (and sometimes talk directly to users at other computers ).
+
+WHY IS THE INTERNET IMPOTANT ?
+The internet helps us with facts and figures , information and knowledge for personal , social and economic development . There are many uses of the internet , however , the use
+of the internet in our daily life depends on individual requirements and goals . 
+
+
+INTRANET IS A NETWORK WITH AN ORGANISATION. 
+
+
+An intranet is a computer network for sharing information , easier communication , collaboration tools , operational systems , and other  computing services within an organization , 
+usually to the exclusion of access by outsiders . 
+
+
+EXTRANET- IT IS USED FOR BOTH INSIDE AND OUTSIDE ORGANISATION WHO HAVE ONLY PREARRANGED AUTHORIZATION CAN ACCESS IT . 
+
+
+An extranet is a controlled private network that allows access to partners , vendors and suppliers or an authorized set of customers - normally to a subset of the information accessible 
+from an organization's intranet. 
+
+An extranet is a private network that enterprises use to provide trusted third parties -- such as suppliers , vendors , partners , customers and other businesses -- secure , controlled 
+access to business information  or operations . 
+
+
+TATA MOTORS NETWORK ------->CEAT/MRF/DUNLOP/JK TYRE
+
+
+FINAL PRODUCT-----> TATA CARS 
+
+
+
+3. TRANMISSION MODE ====== SIMPLEX/HALF DUPLEX/FULL DUPLEX ?
+
+
+SIMPLEX- ONE TO ONE IN A SINGLE DIRECTION 
+HALF DUPLEX - BOTH WAY COMMUNICATION BUT NOT AT THE SAME TIME 
+FULL DUPLEX- BOTH WAY COMMUNICATION AT THE SAME TIME 
+
+
+4. CATEGORY OF NETWORK 
+
+LAN-- LOACL AREA NETWORK ---->~100M ******
+                 
+
+                     i)CAN - CAMPUS AREA NW 
+                     ii)SAN - STORAGE AREA NW
+                     iii)PAN - PERSONAL AREA NW 
+
+
+WAN - WIDE AREA NW 
+         i) MAN - METROPOLITAN AREA NW 
+
+
+5. LINE CONFIFURATION---
+          i)POINT TO POINT -- ONE TO ONE CONNECTION 
+          ii)POINT TO MULTIPOINT ----> ONE SERVER IS CONNECTED WITH TWO OR MORE NODE.
+
+
+6. SSID ----> SERVICE SET IDENTIFIRE-- WIRELESS ACCESS POINT / ROUTER NAME -- BY USING IT WE CAN CONNECT THE AP/WR. 
+
+
+
+123456=***********
+CLEAR TEXT       CIPHER TEXT (ENCRYPTED TEXT ) 
+
+
+
+DES- DATA ENCRYPTION STANDARD --- 56 BIT 
+3DES-TRIPLE DATA ENCRYPTION STANDARD--->3*56BIT
+AES-ADVANCED ENCRYPTION STANDARD---->128/192/256 BIT
+TKIP-TEMPORAL KEY INTEGRITY PROTOCOL--->128 BIT
+
+
+7. BASEBAND---
+
+
+B-->BIDIRECTIONAL
+E-->ENTIRE CHANNEL WILL TAKEN UP 
+D-->DIGITAL
+R-->REPEATER
+
+
+EXAMPLE= LAN NETWORK 
+
+
+10 BASE 2
+
+
+10=10 Mbps
+BASE=BASEBAND
+2=UPTO~200M BUT PRACTICALLY IT IS ~185M
+=================================================================================================================================================================
+
+
+BROADBAND --
+BSNL SERVER --->DIGITAL--->DIGITAL TO ANALOG CONVERTER-->ANALOG SIGNAL ---> TRANSFERRED THROUGH CABLE --> RECEIVED ANALOG --> ANALOG TO DIGITAL CONVERTER--> DIGITAL SIGNAL -->
+RECEIVED BY US 
+
+
+
+1.UNIDIRECTIONAL
+2. ANALOG SIGNAL TRANSFERRED
+3. MODEM'S ARE USED 
+4. USED TO PROVIDE INTERNET. 
+
+
+ 

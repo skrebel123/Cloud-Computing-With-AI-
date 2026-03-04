@@ -1,0 +1,82 @@
+Access Methods
+==============
+
+
+You now know that a network uses a network topology—which is the layout of the
+network—and you know that some form of media such as cabling connects all hosts
+on the network. We have discussed the three major types of cabling: coax, twistedpair,
+and fiber-optic cabling.
+This section will identify what are known as access methods. An access method
+determines how a host will place data on the wire—does the host have to wait
+its turn or can it just place the data on the wire whenever it wants? The answer is
+determined by three major access methods: CSMA/CD, CSMA/CA, and token
+passing. Let’s look at each of these access methods.
+
+
+CSMA/CD
+========
+Carrier sense multiple access with collision detection (CSMA/CD) is one of the most
+popular access methods in use today. With CSMA/CD, every host has equal access
+to the wire and can place data on the wire when the wire is free from traffic. If a host
+wishes to place data on the wire, it will “sense” the wire and determine whether there
+is a signal already on the wire. If there is, the host will wait to transmit the data; if the
+wire is free, the host will send the data.
+
+The problem with the process just described is that, if there are two systems on
+the wire that “sense” the wire at the same time to see if the wire is free, they will
+both send data out at the same time if the wire is free. When the two pieces of data
+are sent out on the wire at the same time, they will collide with one another, and
+the data will be destroyed. If the data is destroyed in transit, the data will need to be
+retransmitted. Consequently, after a collision, each host will wait a variable length
+of time before retransmitting the data (they don’t want the data to collide again),
+thereby preventing a collision the second time. When a system determines that the
+data has collided and then retransmits the data, that is known as collision detection.
+To summarize, CSMA/CD provides that
+before a host sends data on the network, it
+will “sense” (CS) the wire to ensure that the
+wire is free of traffic. Multiple systems have
+equal access to the wire (MA), and if there is a
+collision, a host will detect that collision (CD)
+and retransmit the data.
+
+
+
+CSMA/CA
+========
+Carrier sense multiple access with collision avoidance (CSMA/CA) is not as popular as
+CSMA/CD and for good reason. With CSMA/CA, before a host sends data on the
+wire, it will “sense” the wire as well to see if the wire is free of signals. If the wire
+
+is free, it will try to “avoid” a collision by sending a piece of “dummy” data on the
+wire first to see whether it collides with any other data. If it does not collide, the
+host in effect assumes “If my dummy data did not collide, then the real data will not
+collide,” and it submits the real data on the wire.
+Token Passing
+With both CSMA/CD and CSMA/CA, the possibility of collisions is always there,
+and the more hosts that are placed on the wire, the greater the chances of collisions,
+because you have more systems “waiting”’ for the wire to become free so that they
+can send their data.
+Token passing takes a totally different approach to deciding on how a system can
+place data on the wire. With token passing, there is an empty packet running around
+on the wire—the “token.” In order to place data on the wire, you need to wait for
+the token; once you have the token and it is free of data, you can place your data on
+the wire. Since there is only one token and a host needs to have the token to “talk,”
+it is impossible to have collisions in a token-passing environment.
+For example, if Workstation 1 wants to send data on the wire, the workstation
+would wait for the token, which is circling the network millions of times per second.
+Once the token has reached Workstation 1, the workstation would take the token
+off the network, fill it with data, mark the token as being used so that no other
+systems try to fill the token with data, and then place the token back on the wire
+heading for the destination host.
+
+All systems will look at the data, but they will not process it, since it is not
+destined for them. However, the system that is the intended destination will read
+the data and send the token back to the sender as a confirmation. Once the token
+has reached the original sender, the token is unflagged as being used and released as
+an empty token onto the network.
+
+TOKEN PASSING
+================
+1.USED IN RING & DUAL RING TOPOLOGY
+2.TOKEN IS A LOGICAL CONTAINER USED TO SEND/RECEIVE THE DATA IN RING TOPOLOGY
+3.USED AS A ACCESS METHOD IN RING TOPOLOGY

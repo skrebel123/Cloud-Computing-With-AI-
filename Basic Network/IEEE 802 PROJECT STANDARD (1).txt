@@ -1,0 +1,66 @@
+802 Project Standards
+==========================
+The Institute of Electrical and Electronics Engineers (IEEE) is a large and
+respected professional organization that is also active in defining standards. The
+802 committee of the IEEE defines one set of standards dear to the hearts of
+most network professionals. Twelve subcommittees of the 802 committee define
+low-level LAN and WAN access protocols. Most of the protocols defined by the
+802 committee reside in the physical and data link layers of the OSI model.
+
+IEEE 802 Categories
+=====================
+As the use of LANs increased, standards were needed to define consistency and
+compatibility between vendors. The IEEE began a project in February 1980, known
+as Project 802 for the year and month it began. IEEE 802 is a set of standards given
+to the various LAN architectures such as Ethernet, Token Ring, and ArcNet by the
+LAN standards committee. The goal of the committee was to define more of the
+OSI’s data link layer, which already contained the LLC and MAC sublayers. Several
+802 subcommittee protocols are the heart of PC networking. Although there are
+a number of 802 project categories, a few of them are focused on for the exam and
+therefore will get a little more focus here in this section.
+
+==============================================================================================
+ETHERNET==10Mbps
+FAST ETHERNET=10/100Mbps===>Cat 5e/ Cat 6
+Gigabit Ethernet==10/100/1000Mbps or 1 Gbps===>CAT 5e/CAT 6/COAXIAL/ F.O
+10 Gigabit Ethernet=1/10 gbps
+===============================================================================================
+802.11
+The IEEE 802.11 standard is the standard that addresses wireless networking
+(discussed in Chapter 7).
+This standard includes the wireless access point (WAP) devices and the wireless
+network interface cards (NICs) that are used to send and receive broadcasts from the
+cell or WAP device.
+The WAPs and wireless NICs can be set to use different frequencies to allow for
+cell overlap. This technology does not include the same technology used by cell
+phones to manage movement of PCs or mobile devices. The wireless NIC is set to a
+specific frequency and must be changed manually to be able to communicate with
+another cell. This means that a PC cannot be moved from one cell area to another
+without changing frequency, unless for some reason the cells operate on the same
+frequency and have no overlap of coverage area.
+There are a few wireless standards that were developed in the IEEE 802.11
+category, and those are listed as follows:
+
+
+==> 802.11a Supports speeds of 54 Mbps at
+frequencies ranging from 5.725 GHz to
+5.850 GHz. 802.11a wireless components
+are not compatible with 802.11b devices.
+
+
+==>802.11b Supports speeds of 11 Mbps at
+frequency ranges of 2.400 GHz to 2.4835
+GHz. 802.11b wireless components are
+compatible with 802.11g devices, which use
+an enhancement of the 802.11b standard.
+
+==>802.11g Supports speeds of 54 Mbps at the same frequency range as 802.11b,
+which allows devices from the two standards to coexist. For example, I have
+an 802.11b wireless access point, but I am connected to it with my 802.11g
+wireless network card. I am getting only the 11 Mbps transfer rate because it is
+the lowest common denominator between the two standards.
+
+===>802.11n Is a new wireless project that runs at 5 GHz or 2.4 GHz and is
+backward compatible with 802.11a/b/g standards. The goal of 802.11n is to
+increase the bandwidth and the range. 802.11n has data transfer rates of over
+100 Mbps

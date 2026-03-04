@@ -1,0 +1,248 @@
+ISO-OSI LAYER
+=============
+pc1===win 10 
+
+pc2==Linux 8.2
+
+we cannot communicate between them..
+
+but after OSI model we can easily communicate between them.
+
+
+pc1==made by IBM
+
+pc2==made By lenovo
+
+we cannot communicate between them..
+
+but after OSI model we can easily communicate between them.
+ 
+ISO-INTERNATIONAL ORGANISATION FOR STANDARDIZATION
+OSI-OPEN SYSTEM INTERCONNECTION
+=============================================
+7 LAYER MODEL
+LAYER NO	LAYER NAME
+7		APPLICATION
+6		PRESENTATION
+5		SESSION
+4		TRANSPORT
+3		NETWORK
+2		DATA LINK
+1		PHYSICAL
+
+All People Seems To Need Data Processing
+----------------------------------------
+DATA LINK-->this LAYER HAS 2 SUB LAYER--->1.MAC-->MEDIA ACCESS CONTROL
+	     2.LLC-->LOGICAL LINK CONTROL
+=============================================
+SENDER 			RECEIVER
+7-1(TOP TO DOWN)	1-7(DOWN TO TOP)
+===============================================
+LAYER 1(PHYSICAL LAYER)
+------------------------
+1.REPRESENTATION OF BITS(COMBINATION OF 0'S AND 1'S)
+2.SYNCHRONIZATION OF BITS
+3.PHYSICAL CHARACTERISTICS OF MEDIA AND DEVICE
+4.TRANSMISSION MODE-(SIMPLEX,HALF DUPLEX, FULL DUPLEX)
+5.LINE CONFIGURATION(POINT TO POINT AND POINT TO MULTIPOINT)
+6.DATA RATE
+7.PHYSICAL TOPOLOGY(STAR,MESH,BUS,RING ETC)
+================================================
+LAYER 2(DATA LINK LAYER)
+1.FRAMING[PREAMBLE+SFD+D.MAC+S.MAC+LLC.H+ETHERNET FIELD+(D.IP+S.IP+D.PORT+S.PORT+DATA)+FCS]
+2.ERROR CHECKING BY FCS(FRAME CHECK SEQUENCE)
+3.PHYSICAL ADDRESSING(PROVIDE D.MAC & S.MAC BEFORE THE DATA)
+4.ACCESS CONTROL
+5.ERROR CHECKING IS DONE HERE NOT CORRECTION..
+-----------------------------------------------------
+Ethernet Frames
+The Data Link layer is responsible for combining bits into bytes and bytes into frames. Frames are used at the Data Link layer to encapsulate packets handed down from the Network layer for transmission on a type of media access.
+
+The function of Ethernet stations is to pass data frames between each other using a group of bits known as a MAC frame format. This provides error detection from a cyclic redundancy check(CRC). But remember—this is error detection, not error correction.
+
+
+
+
+
+Preamble An alternating 1,0 pattern provides a 5 MHz clock at the start of each packet, which allows the receiving devices to lock the incoming bit stream.
+
+
+Start Frame Delimiter (SFD)/Synch The preamble is seven octets and the SFD is one octet (synch). The SFD is 10101011, where the last pair of 1s allows the receiver to come into the alternating 1,0 pattern somewhere in the middle and still <<<sync up to detect the beginning of the data>>>.
+
+Destination Address (DA) This transmits a 48-bit value using the least significant bit (LSB) first. The DA is used by receiving stations to determine whether an incoming packet is addressed
+to a particular node. The destination address can be an individual address or a broadcast or multicast MAC address. Remember that a broadcast is all 1s—all Fs in hex—and is sent to all devices. A multicast is sent only to a similar subset of nodes on a network.
+
+
+Source Address (SA) The SA is a 48-bit MAC address used to identify the transmitting device, and it uses the least significant bit first. Broadcast and multicast address formats are illegal within
+the SA field.
+
+
+Length or Type 802.3 uses a Length field, but the Ethernet_II frame uses a Type field to identify the Network layer protocol. The old, original 802.3 cannot identify the upper-layer protocol and must be used with a proprietary LAN—IPX, for example.
+
+
+Data This is a packet sent down to the Data Link layer from the Network layer. The size can vary from 46 to 1,500 bytes.
+
+
+
+Frame Check Sequence (FCS) FCS is a field at the end of the frame that’s used to store the cyclic redundancy check (CRC) answer. The CRC is a mathematical algorithm that’s run when each frame is built based on the data in the frame. When a receiving host receives the frame and runs the CRC, the answer should be the same. If not, the frame is discarded, assuming errors have occurred.
+================================================================
+MAC SUBLAYER
+1.MEDIA ACCESS CONTROL
+2.PROVIDE D.MAC & S.MAC BEFORE THE DATA
+------------------------------------------------
+CHARACTERISTICS OF MAC
+1.MEDIA ACCESS CONTROL
+2.48 BIT OR 6 BYTE
+3.HEXADECIMAL NO SYSTEM
+4.12 CHARACTER
+5.FIRST 3 PARTS ARE KNOW AS OUI-ORGANISATIONAL UNIQUE IDENTIFIER
+6.LAST 3 PARTS ARE KNOWN AS DEVICE UNIQUE ID
+7.PERMANENT ADDRESS.
+8.EACH PARTS ARE SEPARATED BY DASH(-)
+9.DIVIDED INTO 6 PARTS
+10.PHYSICAL UNIQUE ADDRESS.
+11.BY USING "GETMAC" U CAN CHECK UR SYSTEM'S MAC ADD ONLY THROUGH CLI
+=========================================================
+FUNCTION OF LLC
+------------------------
+1.IT IDENTIFIES WHICH PROTOCOLS ARE USED IN THE NETWORK LAYER
+===========================================================
+3.LAYER 3(NETWORK LAYER)
+=============================
+1.ROUTING(IT IS A PROCESS BY WHICH ROUTER CAN SEND DATA FROM ONE NETWORK TO ANOTHER THROUGH THE BEST PATH HAVING LEAST METRIC AMONG ALL POSSIBLE PATH FROM SOUCE TO DESTIONATION.)
+
+2.LOGICAL ADDRESSING OR PROVIDE D.IP & S.IP BEFORE DATA
+=============================================================
+LAYER 4(TRANSPORT LAYER)
+========================
+1.SERVICE POINT ADDRESSING(PORT ADDRESSING)-->PROVIDE D.PORT AND S.PORT BEFORE DATA
+
+PORT ADDRESS
+============
+In computer networking, a port is a communication endpoint. 
+
+
+****At the software level, within an operating system, a port is a logical construct that identifies a specific process or a type of network service..**********
+
+
+A port is identified for each transport protocol and address combination by a 16-bit unsigned number, known as the port number. The most common transport protocols that use port numbers are the Transmission Control Protocol (TCP) and the User Datagram Protocol (UDP).
+
+
+I WANT TO SEND MAIL TO BAISHAKHI===USED PROTOCOL SMTP(25/465(SSL)/587(TLS))
+BAISHAKHI WANTS TO RECEIVE MAIL==USED PROTOCOL POP3(110/995(SSL)) AND IMAPV4(143/993(SSL))
+
+110+25+DATA=====>
+
+2.SEGMENTATION & REASSEMBLY
+3.CONNECTION Creation BY 3 WAY HANDSHAKING
+
+i)SENDING SYNC SIGNAL TO THE RECEIVER
+ii)a)NEGOTIATION BETWEEN SENDER AND RECEIVER
+   b)RECEIVER SEND ACK TO THE SENDER
+iii)FINAL ACK SEND BY SENDER TO RECEIVER
+
+--->CONNCTION CREATED---> DATA TRANSFER BEGINS
+
+Here’s a summary of the steps in the connection-oriented session—that three-way handshake—
+
+The first “connection agreement” segment is a request for synchronization (SYN).
+The next segments acknowledge (ACK) the request and establish connection parameters—the rules—between hosts. These segments request that the receiver’s sequencing is synchronized here as well so that a bidirectional connection can be formed.
+
+The final segment is also an acknowledgment, which notifies the destination host that the connection agreement has been accepted and that the actual connection has been established. Data transfer can now begin.
+
+4.FLOW CONTROL BY
+
+A)READY / NOT READY SIGNAL
+B)WINDOWING
+
+5.ERROR CHECKING & CORRECTION
+=======================================================
+LAYER 5(SESSION LAYER)
+1.DIAGLOG CONTROL
+	A)CREATING SESSION
+	B)MANAGING SESSION
+	C)TERMINATING SESSION
+2.SYNCHRONIZATION- SENDING DATA SERIALLY ONE AFTER ANOTHER.
+AFTER SENDING SOME PORTION OF DATA IT CREATES A CHECKPOINT THEN FROM THAT POINT IT WILL SEND THE NEXT AMOUNT OF DATA AGAIN.
+==========================================================
+LAYER 6 (PRESENTATION LAYER)
+1.DATA ENCRYPTION & DECRYPTION
+2.DATA COMPRESSSION & DECOMPRESSION
+3.DATA TRANSLATION(ENCODING AND DECODING)
+=======================================================
+LAYER 7(APPLICATION LAYER)
+1.ITS THE LAYER WHERE USER INTERACT DIRECTLY
+2.MAIL SERVICES, BROWSER, APPLCATIONS
+========================================================
+ENCAPSULATION AND DEENCAPSULATION
+----------------------------------
+1.SENDER SIDE--->APP,PRES,SESS--->DATA--->TRANS-->D.PORT+S.PORT+DATA--->NW --->D.IP+S.IP+D.PORT+S.PORT+DATA-->DATA LINK--->D.MAC+S.MAC+LLC.H+ETHERNET FIELD+D.IP+S.IP+D.PORT+S.PORT+DATA+FCS--->PHY--->RAW BITS(COMBINATION OF 1'S AND 0'S)
+THIS IS KNOWN AS ENCAPSULATION
+
+RECEIVER SIDE--->WHATEVER HEADER AND TAILOR ARE ADDED WITH THE DATA WILL BE REMOVED IN THAT LAYER WHERE IT WAS ADDED PREVIOULY.
+KNOWN AS DEENCAPSULATION
+===========================================================
+ENCRYPTION & DECRYPTION
+
+USERNAME=RUPAK
+PASSWORD=123456
+
+ENCRYPTION ALGORITHIM==MD5/AES/3DES/DES/SHA-1/SHA-2/RSA OR ANY ONE
+
+DATABASE===UR PASSWORD ARE STORED IN CIPHER TEXT
+I.E---->CLEAR TEXT(123456)+KEY=********(CIPHER TEXT)
+
+RECEIVER SIDE-->********(CIPHER TEXT)--->DECRYPT-->123456(CLEAR TEXT)
+=============================================================
+ENCODING AND DECODING
+
+NOT TO KEEP THIS DATA/INFORMATION SECRET.
+
+I LOVE MY INDIA---------->COMPUTER WILL NOT UNDERSTAND--->I HAVE TO CONVRT/ENCODE IT INTO ASCII CODE (SO THAT PC CAN UNDERSTAND LIKE IN BINARY DATA)
+
+11100010101011000101------->WE CAN NOT UNDERSTAND--->DECODE--->HUMAN READABLE FORMAT--->I LOVE MY INDIA
+===========================================================
+PDU(PROTOCOL DATA UNIT)
+
+PDU stands for Protocol Data Unit. It's a term used in networking and telecommunications to refer to the data unit that's transmitted between network entities. Essentially, it's the package of information that gets passed around in a network.
+
+
+APP,PRE,SESS-->DATA
+TRANS-->SEGMENT(TCP HEADER--D.PORT+S.PORT)
+NW--->PACKET(IP HEADER--D.IP+S.IP)
+DATA LINK--->FRAME(D.MAC+S.MAC+LLC.H+ETHERNET FIELD+      +FCS)
+PHYSICAL--->RAW BITS
+=============================================================
+LAYER NAME	DEVICE NAME
+PHYSICAL LAYER	HUB REPEATER CABLES NIC MODEM
+DATALINK	L2 SWITCH BRIDGE BROUTER(BRIDGE+ROUTER)
+NW		ROUTER L3 SW FW BROUTER(BRIDGE+ROUTER)
+ALL LAYER	GATEWAY, PC , MGMT STATION
+==================================================================================
+DATA ENCAPSULATION & DEENCAPSULATION.
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+SENDER SIDE
+============
+APPL==DATA
+PRESE=DATA
+SESSION=DATA
+TRANSPORT=D.PORT+S.PORT+DATA
+NW=D.IP+S.IP+D.PORT+S.PORT+DATA
+DATALINK=PREAMBLE+SFD+D.MAC+S.MAC+LLC.H+ETHERNET FIELD+D.IP+S.IP+D.PORT+S.PORT+DATA+FCS
+
+PHYSICAL=RAW BITS
+
+
+RAW BITS ARE CONVERTED INTO ELECTRICAL VOLTAGE OR LIGHT SIGNAL AS PER THE MEDIA OR CABLE.
+
+RECEIVER SIDE
+=============
+
+APPL==DATA
+PRESE=DATA
+SESSION=DATA
+TRANSPORT=D.PORT+S.PORT+DATA
+NW=D.IP+S.IP+D.PORT+S.PORT+DATA
+DATALINK=PREAMBLE+SFD+D.MAC+S.MAC+LLC.H+ETHERNET FIELD+D.IP+S.IP+D.PORT+S.PORT+DATA+FCS
+PHYSICAL=RAW BITS
