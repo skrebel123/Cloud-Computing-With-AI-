@@ -1,0 +1,77 @@
+LINUX BASIC COMMANDS
+
+Q1. USER & GROUP CREATION ?
+
+-GO TO ROOT (SU -)
+-GIVE PASSWORD OF ROOT
+FOR USER CREATION 
+ # useradd name 
+ # echo "redhat" | passwd --stdin name 
+ (changing password for user name)
+ (passwd: all authentication tokens updated successfully)
+
+ Testing
+  login with 
+ # su - name
+ (give password if wanted)
+now the user logged in.
+
+To check my user is created 
+ # grep name /etc/passwd.....
+
+
+ GROUP CREATION 
+ -GO TO ROOT (SU -)
+-GIVE PASSWORD OF ROOT
+ # groupadd name 
+
+ Testing
+# grep name /etc/group.....
+
+ TO ADD A USER INTO A GROUP.
+ consider:> groupname = jetking. & user = saina
+   # usermod -aG jetking saina.
+
+TO CHECK 
+
+# grep jetking /etc/group.
+
+
+Q2. CREATE A USER AND MAKE IT AS A ADMIN ?
+
+ -GO TO ROOT (SU -)
+-GIVE PASSWORD OF ROOT
+ 
+ # visudo 
+ (visudo will open an administrative file
+you have to find this line in the file written below)
+
+## same thing without a password (we have to find this line in the file)
+# %wheel	ALL=(ALL)	NOPASSWD: ALL
+%username	ALL=(ALL)	NOPASSWD: ALL   {press insert button then add this line as it is only username will be yours}
+escape :wq! (to save this file)
+
+Testing
+
+Now login with admin user
+-Now try admin level task eg- adduser
+$ sudo useradd username.
+
+Q3. DIRECTORY, EMPTY FILE & FILE WITH SOME CONTENT CREATION & FILE PERMISSION ?
+
+HOW TO CREATE A DIRECTORY
+
+#/$ mkdir name 
+
+Testing
+#/$ ls
+
+(Directory can be created in user & root both)
+
+HOW TO CREATE AN EMPTY FILE
+ enter into the directory 
+ $ cd directory name
+ $ touch file name 
+
+
+
