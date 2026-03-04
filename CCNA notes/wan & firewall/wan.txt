@@ -1,0 +1,217 @@
+Introduction to Wide Area Networks
+
+Let’s begin exploring WAN basics by asking, what’s the difference between a wide area network
+(WAN) and a local area network (LAN)? Clearly there’s the distance factor, but modern wireless
+LANs can cover some serious turf, so there’s more to it than that. What about bandwidth? Here
+again, some really big pipes can be had for a price in many places, so that’s not it either. What’s
+the answer we’re looking for?
+A major distinction between a WAN and a LAN is that while you generally own a LAN
+infrastructure, you usually lease a WAN infrastructure from a service provider. And to be
+honest, modern technologies even blur this characteristic somewhat, but it still fits neatly into
+the context of Cisco’s exam objectives!
+I’ve already talked about the data link that you usually own back when we covered Ethernet, so
+now I’m going to focus on the type you usually don’t own—the kind you typically lease from a
+service provider.
+There are several reasons why WANs are necessary in corporate environments today.
+LAN technologies provide amazing speeds (10/40/100 Gbps is now common) and at a great bang
+for your buck! But these type of solutions can only work well in relatively small geographic
+areas. You still need WANs in a communications environment because some business needs
+require connections to remote sites for many reasons, including the following:
+People in the regional or branch offices of an organization need to be able to communicate
+and share data.
+
+Organizations often want to share information with other organizations across large distances.
+Employees who travel on company business frequently need to access information that
+resides on their corporate networks.
+Here are three major characteristics of WANs:
+WANs generally connect devices that are separated by a broader geographic area than a LAN
+can serve.
+WANs use the services of carriers such as telcos, cable companies, satellite systems, and
+network providers.
+WANs use serial connections of various types to provide access to bandwidth over large
+geographic areas.
+
+Defining WAN Terms
+=========================
+Customer premises equipment (CPE) Customer premises equipment (CPE) is equipment
+that’s typically owned by the subscriber and located on the subscriber’s premises.
+CSU/DSU A channel service unit/data service unit (CSU/DSU) is a device that is used to
+connect data terminal equipment (DTE) to a digital circuit, such as a T1/T3 line. A device is
+considered DTE if it is either a source or destination for digital data—for example, PCs, servers,
+and routers. In Figure 21.4, the router is considered DTE because it is passing data to the
+CSU/DSU, which will forward the data to the service provider. Although the CSU/DSU connects
+to the service provider infrastructure using a telephone or coaxial cable, such as a T1 or E1 line,
+it connects to the router with a serial cable. The most important aspect to remember for the
+CCNA objectives is that the CSU/DSU provides clocking of the line to the router. You really need
+to understand this completely, which is why I’ll cover it in depth later in the cabling the serial
+WAN interface configuration section!
+Demarcation point The demarcation point (demarc for short) is the precise spot where the
+service provider’s responsibility ends and the CPE begins. It’s generally a device in a
+telecommunications closet owned and installed by the telecommunications company (telco). It’s
+your responsibility to cable (extended demarc) from this box to the CPE, which is usually a
+connection to a CSU/DSU, although more recently we see the provider giving us an Ethernet
+connection. Nice!
+Local loop The local loop connects the demarc to the closest switching office, referred to as the
+central office.
+Central office (CO) This point connects the customer’s network to the provider’s switching
+network. Make a mental note that a central office (CO) is sometimes also referred to as a point of
+presence (POP).
+Toll network The toll network is a trunk line inside a WAN provider’s network. This network is
+a collection of switches and facilities owned by the Internet service provider (ISP).
+Optical fiber converters Even though I’m not employing this device in Figure 21.4, optical
+fiber converters are used where a fiber-optic link terminates to convert optical signals into
+electrical signals and vice versa. You can also implement the converter as a router or switch
+module.
+
+WAN Connection Types
+========================
+Dedicated (leased lines) These are usually referred to as a point-to-point or dedicated connections. A leased line is a pre-established WAN communications path that goes from the CPE through the DCE switch, then over to the CPE of the remote site. The CPE enables DTEnetworks to communicate at any time with no cumbersome setup procedures to muddle through before transmitting data. When you’ve got plenty of cash, this is definitely the way to go because it uses synchronous serial lines up to 45 Mbps. HDLC and PPP encapsulations are frequently used on leased lines, and I’ll go over these with you soon. Circuit switching When you hear the term circuit switching, think phone call. The big advantage is cost; most plain old telephone service (POTS) and ISDN dial-up connections are not
+flat rate, which is their advantage over dedicated lines because you pay only for what you use, and you pay only when the call is established. No data can transfer before an end-to-endconnection is established. Circuit switching uses dial-up modems or ISDN and is used for lowbandwidth
+data transfers. Okay, I know what you’re thinking, “Modems? Did he say modems?
+Aren’t those found only in museums now?” After all, with all the wireless technologies available,
+who would use a modem these days? Well, some people do have ISDN; it’s still viable and there
+are a few who still use a modem now and then. And circuit switching can be used in some of the
+newer WAN technologies as well.
+Packet switching This is a WAN switching method that allows you to share bandwidth with
+other companies to save money, just like a super old party line, where homes shared the same
+phone number and line to save money. Packet switching can be thought of as a network that’s
+designed to look like a leased line yet it charges you less, like circuit switching does. As usual, you
+get what you pay for, and there’s definitely a serious downside to this technology. If you need to
+transfer data constantly, well, just forget about this option and get a leased line instead! Packet
+switching will only really work for you if your data transfers are bursty, not continuous; think of
+a highway, where you can only go as fast as the traffic—packet switching is the same thing. Frame
+Relay and X.25 are packet-switching technologies with speeds that can range from 56 Kbps up to
+
+
+Encapsulation Methods
+
+HDLC
+Based on ISO standards, the HDLC protocol can be used with synchronous and
+asynchronous connections and defines the frame type and interaction between two
+devices at the data link layer. The following sections cover how Cisco implements
+HDLC and how it is configured on a router’s serial interface.
+Frame Type
+Cisco’s implementation of HDLC is based on ISO’s standards, but Cisco has made
+a change in the frame format, making it proprietary. In other words, Cisco’s HDLC
+will work only if the remote end also supports Cisco’s HDLC. Figure 25-5 shows
+examples of some WAN frame formats, including ISO’s HDLC, Cisco’s HDLC,
+and PPP. Notice that the main difference between ISO’s HDLC and Cisco’s frame
+format is that Cisco has a proprietary field: Type. One of the problems with ISO’s
+HDLC is that it does not define how to carry multiple protocols across a single link,
+as does Cisco’s HDLC with the Type field. Therefore, ISO’s HDLC is typically used
+on serial links where there is only a single
+protocol to transport. The default encapsulation
+on Cisco’s synchronous serial interfaces is
+HDLC. Actually, Cisco supports only its
+own implementation of HDLC, not ISO’s
+implementation.
+
+PPP Components
+PPP has many more features than HDLC. Like HDLC, PPP defines a frame type and
+how two PPP devices communicate with each other, including the multiplexing of
+network and data link layer protocols across the same link. However, PPP also does
+the following:
+■ Performs dynamic configuration of links
+■ Allows for authentication
+■ Compresses packet headers
+■ Tests the quality of links
+■ Performs error detection and correction
+■ Allows multiple PPP physical connections to be bound together as a single
+logical connection (referred to as multilink)
+
+
+PPP has three main components:
+■ Frame format (encapsulation)
+■ Link Control Protocol (LCP)
+■ Network Control Protocol (NCP)
+Each of these three components plays an important role in the setup, configuration,
+and transfer of information across a PPP connection. The following sections cover
+these components.
+Frame Format
+The first component of PPP is the frame format, or encapsulation method, it uses.
+The frame format defines how network layer packets are encapsulated in a PPP
+frame, as well as the format of the PPP frame. PPP is typically used for serial WAN
+
+
+connections because of its open-standard character. It works on asynchronous
+(modem) and synchronous (ISDN, point-to-point, and HSSI) connections. If you
+are dialing up to your ISP, you’ll be using PPP. PPP’s frame format is based on ISO’s
+HDLC, as you can see in Figure 25-5. The main difference is that the PPP frame
+has a Protocol field, which defines the protocol of the network layer data that is
+encapsulated.
+LCP and NCP
+The second and third components of PPP are LCP and NCP. LCP is responsible for
+establishing, configuring, authenticating, and testing a PPP connection. It handles
+all of the up-front work in setting up a connection. Here are some of the things that
+LCP will negotiate when setting up a PPP connection:
+■ Authentication method used (PPP Authentication Procedure [PAP] or
+Challenge-Handshake Authentication Protocol [CHAP]), if any
+■ Compression algorithm used (Stacker or Predictor), if any
+■ Callback phone number to use, if defined
+■ Multilink: other physical connections to use, if configured
+LCP and NCP go through three steps to establish a PPP connection:
+1. Link establishment (LCP)
+2. Authentication (LCP)
+3. Protocol negotiation (NCP)
+The first step is the link establishment phase. In this step, LCP negotiates the
+PPP parameters that are to be used for the connection, which may include the
+authentication method and compression algorithms. If authentication has been
+configured, the authentication type is negotiated. This can either be PAP or CHAP.
+
+
+
+866 Chapter 25: WAN Introduction
+PPP Authentication
+PPP, unlike HDLC, supports device authentication. Two methods can be used to
+implement authentication: PAP and CHAP. Both of these authentication methods
+are defined in RFC 1334; RFC 1994 replaces the CHAP component of RFC 1334.
+The authentication process is performed (by LCP) before the network and data link
+layer protocols are negotiated for the PPP connection by NCP. If the authentication
+fails, the data link layer will not come up. Authentication is optional and adds very
+little overhead to the connection. As you will see in the following sections, the
+setup and troubleshooting of PAP and CHAP are easy.
+PAP
+Of the two PPP authentication protocols, PAP is the simplest but the least secure.
+During the authentication phase, PAP goes through a two-way handshake process.
+In this process, the source sends its username (or hostname) and password, in clear
+text, to the destination. The destination compares this information to a list of
+locally stored usernames and passwords. If it finds a match, the destination sends
+back an accept message. If it doesn’t find a match, it sends back a reject message. The
+top part of Figure 25-6 shows an example of PAP authentication.
+
+
+CHAP
+One main problem with PAP is that it sends the username and password across
+the connection in clear text. If someone is tapping into the connection and
+eavesdropping on the PPP communication, she will see the actual password that
+is being used, making it an insecure authentication method. CHAP, on the other
+hand, uses a one-way hash function based on the Message Digest 5 (MD5) hashing
+algorithm to hash the password. This hashed value is then sent across the wire. In
+this situation, the actual password is never sent. Anyone tapping the wire will not be
+able to reverse the hash to come up with the original password. This is why MD5 is
+referred to as a one-way function—it cannot be reverse-engineered.
+CHAP uses a three-way handshake process to perform authentication. The
+bottom part of Figure 25-6 shows the CHAP authentication process. First, the source
+sends its username (not its password) to the destination. The destination sends back
+a challenge, which is a random value generated by the destination. The challenge
+contains the following information:
+■ Packet identifier Set to 01 for a challenge, 02 for the reply to a challenge,
+03 for allowing the PPP connection, and 04 for denying the connection
+■ ID A local sequence number assigned by the challenger to distinguish
+among multiple authentication processes
+■ Random number The random value used in the MD5 hash function
+■ Router name The name of the challenging router (the server), which is
+used by the source to find the appropriate password to use for authentication
+Both sides then take the source’s username, the matching password, and the
+challenge and run them through the MD5 hashing function. The source then takes
+the result of this function and sends it to the destination. The destination compares
+this value to the hashed output that it generated—if the two values match, the
+password used by the source must have been the same as that which was used by the
+destination, and thus the destination will permit the connection.
+Authentication commonly
+fails because administrators either
+don’t match up the usernames and
+passwords (username command) on
+the two endpoints or they don’t match
+up the authentication protocol (ppp
+authentication command).

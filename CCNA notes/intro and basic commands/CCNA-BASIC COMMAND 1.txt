@@ -1,0 +1,93 @@
+==============================================================
+==============================================================
+BASIC COMMANDS
+==============
+1.HOW TO ENTER INTO THE USER EXEC MODE
+
+Would you like to enter the initial configuration dialog? [yes/no]: NO
+
+START THE ROUTER==>"PRESS RETURN TO GET STARTED " MSG COME PRESS ENTER
+
+Router>
+
+HOW TO ENTER INTO THE priviledge Mode or Enable Mode
+
+2.Router>enable or en
+
+Router#
+
+HOW TO ENTER INTO THE Global Configuration Mode
+
+3.Router#configure terminal or conf t or configure -->double enter
+
+Router(Config)#
+
+4.how to return back to the priviledge Mode or Enable mode from Global Configuration Mode.
+
+Router(Config)#exit or ctrl+z or ctrl+c===>press Enter
+
+Router#
+
+5.Router# disable==>enter or exit or logout-->double enter
+
+Router>
+
+6.How to view DRAM or RAM or Running Configuration
+
+Router#show running-config or sh run
+
+7.How to save DRAM(Running Configuration) Content to NVRAM  (Startup Configuration)
+
+Router#copy running-config startup-config
+
+       	or
+	copy run start
+	or
+	wr
+	or
+	write memory
+
+8.How to view NVRAM Content or Startup Configuration
+
+Router#show startup-config or sh start
+
+9.How to Erase Startup Configuration
+Router#erase startup-configuration********
+		or
+          erase nvram:
+	
+       
+
+10.How to view which commands will run in which mode?
+
+Router>?
+Router#?
+Router(Config)#?
+
+11.How to view which commands will run after one commands
+like what we can use after "Configure" command
+
+Router#configure ?
+  terminal  Configure from the terminal
+  <cr>
+
+12.What is the use of "Tab " Key in Cisco
+
+Router#Conf====>press "TAB" from k/b===>it will change Conf to full command.
+
+Router#Configure
+
+
+13.How to set Enable mode pasword
+
+Router(Config)#enable password <ccna/ajit>
+
+14.How to set Remove Enable mode pasword or Any settings
+
+Router(Config)#no enable password
+
+15.HOW TO ENCRYPT THE ENABLE MODE PASSWORD 
+
+Router(Config)#enable secret <ccna>  [md5(message digest version 5 algorithm used here]
+
+==============================================================

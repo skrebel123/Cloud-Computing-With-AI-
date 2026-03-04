@@ -1,0 +1,456 @@
+Switch(config)#vlan ?
+  <1-4094>  ISL VLAN IDs 1-1005
+Switch(config)#vlan 2
+Switch(config-vlan)#name ruby
+Switch(config-vlan)#exit
+Switch(config)#
+Switch(config)#vlan 3
+Switch(config-vlan)#name pearl
+Switch(config-vlan)#
+========================================================
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+2    ruby                             active    
+3    pearl                            active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0
+2    enet  100002     1500  -      -      -        -    -        0      0
+3    enet  100003     1500  -      -      -        -    -        0      0
+1002 fddi  101002     1500  -      -      -        -    -        0      0   
+1003 tr    101003     1500  -      -      -        -    -        0      0   
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0   
+1005 trnet 101005     1500  -      -      -        ibm  -        0      0   
+
+===================================================================
+Vlan creation using old methods
+================================
+Switch#vlan database
+
+Switch(vlan)#vlan 4 name gold
+VLAN 4 added:
+    Name: gold
+
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+4    gold                             active   
+
+====================================================================
+Switch(config)#int range fa 0/1-2
+
+Switch(config-if-range)#switchport mode access 
+Switch(config-if-range)#switchport access vlan 2
+Switch(config-if-range)#exit
+
+
+Switch(config)#int range fa 0/3-4
+Switch(config-if-range)#switchport mode access 
+Switch(config-if-range)#switchport access vlan 3
+----------------------------------------------
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+2    ruby                             active    Fa0/1, Fa0/2
+3    pearl                            active    Fa0/3, Fa0/4
+
+=============================================================
+testing
+C:\>ping 192.168.90.2
+
+Pinging 192.168.90.2 with 32 bytes of data:
+
+Reply from 192.168.90.2: bytes=32 time<1ms TTL=128
+Reply from 192.168.90.2: bytes=32 time<1ms TTL=128
+Reply from 192.168.90.2: bytes=32 time<1ms TTL=128
+Reply from 192.168.90.2: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.90.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>ping 192.168.90.3
+
+Pinging 192.168.90.3 with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.90.3:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\>ping 192.168.90.4
+
+Pinging 192.168.90.4 with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.90.4:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+====================================================================================================================================================
+INTER VLAN CONFIGURATION USING "ROUTER ON A STICK"
+===================================================
+
+Switch(config)#vlan 2
+Switch(config-vlan)#name wb
+Switch(config-vlan)#exit
+Switch(config)#vlan 3
+Switch(config-vlan)#name kol
+Switch(config-vlan)#exit
+Switch(config)#
+Switch(config)#
+Switch(config)#int fa 0/2
+Switch(config-if)#swit
+Switch(config-if)#switchport mode acc
+Switch(config-if)#switchport mode access 
+Switch(config-if)#swit
+Switch(config-if)#switchport acc
+Switch(config-if)#switchport access vlan 2
+Switch(config-if)#int fa 0/3
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 3
+Switch(config-if)#exit
+Switch(config)#
+Switch(config)#
+
+Switch(config)#int fa 0/1
+Switch(config-if)#switchport mode trunk 
+===============================================================
+router configuration
+====================
+Router(config)#int fa 0/0
+Router(config-if)#no ip add
+Router(config-if)#no ip address 
+Router(config-if)#no sh
+
+Router(config-if)#int fa 0/0.1
+Router(config-subif)#
+%LINK-5-CHANGED: Interface FastEthernet0/0.1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0.1, changed state to up
+
+Router(config-subif)#encap
+Router(config-subif)#encapsulation dot
+Router(config-subif)#encapsulation dot1Q 2
+Router(config-subif)#ip add
+Router(config-subif)#ip address 192.168.90.1 255.255.255.0
+Router(config-subif)#no sh
+Router(config-subif)#int fa 0/0.2
+Router(config-subif)#
+%LINK-5-CHANGED: Interface FastEthernet0/0.2, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0.2, changed state to up
+
+Router(config-subif)#encapsulation dot1Q 3
+Router(config-subif)#ip address 192.168.100.1 255.255.255.0
+Router(config-subif)#no sh
+Router(config-subif)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+----------------------------------------------------------------------------------
+testing
+===========
+:\>ping 192.168.90.1
+
+Pinging 192.168.90.1 with 32 bytes of data:
+
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.90.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>ping 192.168.100.1
+
+Pinging 192.168.100.1 with 32 bytes of data:
+
+Reply from 192.168.100.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.100.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.100.1: bytes=32 time=5ms TTL=255
+Reply from 192.168.100.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.100.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 5ms, Average = 1ms
+
+C:\>ping 192.168.100.2
+
+Pinging 192.168.100.2 with 32 bytes of data:
+
+Request timed out.
+Reply from 192.168.100.2: bytes=32 time<1ms TTL=127
+Reply from 192.168.100.2: bytes=32 time<1ms TTL=127
+Reply from 192.168.100.2: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.100.2:
+    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+Switch#sh interfaces trunk 
+Port        Mode         Encapsulation  Status        Native vlan
+Fa0/1       on           802.1q         trunking      1
+
+Port        Vlans allowed on trunk
+Fa0/1       1-1005
+
+Port        Vlans allowed and active in management domain
+Fa0/1       1,2,3
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Fa0/1       1,2,3
+========================================================================
+How to Configure Trunk Port In L3 switch
+=============================================
+
+Switch(config)#int fa 0/1
+Switch(config-if)#switchport trunk encapsulation dot1q 
+Switch(config-if)#switchport mode trunk
+================================================================================================
+
+VTP is a Cisco-proprietary protocol that traverses trunks. It is used to create a consistent VLAN configuration across all switches in the same domain: A VLAN can be added on one switch and propagated to other switches; however,
+switches will ignore VTP messages from other VTP domains.
+
+VTP Modes
+==========
+When you are setting up VTP, you can choose from three different modes for your switch’s configuration:
+
+■ Client
+■ Server
+■ Transparent
+
+
+Remember the differences among the VTP modes***********
+==============================================
+Description of VTP Modes
+				Server	Client	Transparent
+
+Can add, modify, and delete VLANs 	Yes 	No 	Yes
+Can generate VTP messages 		Yes 	No 	No
+Can propagate VTP messages 		Yes 	Yes 	Yes
+Can accept changes in a VTP message 	Yes 	Yes 	No
+Default VTP mode 			Yes 	No 	No
+Saves VLANs to NVRAM 		Yes 	No 	Yes
+ 
+VTP Messages
+=============
+If you use a client/server configuration for VTP, these switches can generate three types of VTP messages:
+
+■ Advertisement request
+■ Subset advertisement
+■ Summary advertisement
+
+An advertisement request message is a VTP message a client generates to acquire VLAN information, to which a server will respond.
+
+When the server responds to a client’s request, it generates a subset advertisement. A subset advertisement contains detailed VLAN configuration information, including the VLAN numbers, names, types, and other information. The client will then configure itself appropriately.
+
+A summary advertisement is also generated by a switch in VTP server mode.
+Summary advertisements are generated every 5 minutes (300 seconds) by default, or when a configuration change takes place on the server switch. Unlike a subset advertisement, a summary advertisement contains only summarized VLAN information.
+
+When a server switch generates a VTP advertisement, it can include the
+following information:
+
+■ The number and name of the VLAN
+■ The MTU size used by the VLAN
+■ The frame format used by the VLAN
+■ The Security Association ID (SAID) value for the VLAN (needed if it is an 802.10 VLAN, which is implemented in networks using FDDI)
+■ The configuration revision number
+■ The name of the VTP domain
+
+
+Switch#sh vtp status 
+VTP Version capable             : 1 to 2
+VTP version running             : 2
+VTP Domain Name                 : 
+VTP Pruning Mode                : Disabled
+
+
+Switch(config)#vtp domain abc.com
+Changing VTP domain name from NULL to abc.com
+
+
+
+Switch(config)#vtp version  ?
+  <1-2>  Set the adminstrative domain VTP version number
+Switch(config)#vtp version  2
+
+
+Switch(config)#vlan 2
+Switch(config-vlan)#name kk311
+Switch(config-vlan)#exit
+Switch(config)#
+Switch(config)#vtp pass
+Switch(config)#vtp password ccna
+Setting device VLAN database password to ccna
+
+
+
+Switch(config)#vtp mode ?
+  client       Set the device to client mode.
+  server       Set the device to server mode.
+  transparent  Set the device to transparent mode.
+Switch(config)#vtp mode client
+
+
+ 
+ 
+VTP pruning is a Cisco feature that allows your switches dynamically to delete or add VLANs to a trunk, creating a more efficient switching network. By default, all VLANs are associated with a trunk connection. This means that if a device in any VLAN generates a broadcast, multicast, or an unknown unicast, the switch will flood this frame out all ports associated with the source VLAN port, including trunks. In many situations, this flooding is necessary, especially if the VLAN spans multiple switches. However, it doesn’t make sense to flood a frame to a neighboring switch if that switch doesn’t have any active ports in the source VLAN.
+
+Switch(config)#VTP pruning
+
+vtp testing
+===============
+Core Layer SW(SW1)
+====================
+Switch(config)#vlan 2
+Switch(config-vlan)#name kolkata
+Switch(config-vlan)#exit
+Switch(config)#vtp domain abc.com
+Changing VTP domain name from NULL to abc.com
+Switch(config)#vtp password ccna
+Setting device VLAN database password to ccna
+Switch(config)#vtp ver 2
+Switch(config)#int fa 0/1
+Switch(config-if)#switchport mode trunk 
+=======================================================
+distribution layer switch configuration
+====================================
+
+Switch(config)#int range fa0/1-2
+Switch(config-if-range)#switchport mode trunk 
+
+Switch(config-if-range)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/2, changed state to down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/2, changed state to up
+
+Switch(config-if-range)#exit
+Switch(config)#vtp domain abc.com
+Changing VTP domain name from NULL to abc.com
+Switch(config)#vtp password ccna
+Setting device VLAN database password to ccna
+Switch(config)#vtp ver 2
+Switch(config)#vtp mode client
+Setting device to VTP CLIENT mode.
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#sh vlan
+
+
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24
+2    wb                               active    
+1002 fddi-default                     active    
+1003 token-ring-default               active    
+1004 fddinet-default                  active    
+1005 trnet-default                    active    
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0
+2    enet  100002     1500  -      -      -        -    -        0      0
+1002 fddi  101002     1500  -      -      -        -    -        0      0   
+1003 tr    101003     1500  -      -      -        -    -        0      0   
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0   
+ --More-- 
+
+===================================================
+access layer switch configuration
+=============================
+Switch(config)#int fa 0/1
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#exit
+Switch(config)#int fa 0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#exit
+Switch(config)#vtp domain abc.com
+Domain name already set to abc.com.
+Switch(config)#vtp password ccna
+Setting device VLAN database password to ccna
+Switch(config)#vtp ver 2
+Switch(config)#vtp mode client
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24
+2    wb                               active    
+1002 fddi-default                     active    
+
+
+----------------------------------------------------------------------------------
+Switch(config)#int fa 0/2
+Switch(config-if)#swit
+Switch(config-if)#switchport acc
+Switch(config-if)#switchport access vlan 2
+Switch(config-if)#
+Switch#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24
+2    wb                               active    Fa0/2
+=============================================================================================

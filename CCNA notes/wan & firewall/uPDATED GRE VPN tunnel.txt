@@ -1,0 +1,113 @@
+GRE VPN Tunnel 
+===============
+1.BASIC IP SETTINGS
+2.ANY ROUTING PROTOCOL CONFIGURATION
+
+3.
+ROUTER 1 TUNNEL CONFIGURATON:----
+
+Router(config)#int tunnel 0
+Router(config-if)#ip address 10.0.12.1 255.255.255.0(/24)
+Router(config-if)#tunnel source se 0/1/0
+Router(config-if)#tunnel destination 25.0.0.2
+Router(config-if)#tunnel mode gre ip
+Router(config-if)#exit
+
+
+int tunnel 0
+ip address 10.0.12.1 255.255.255.0
+tunnel source se 0/3/0
+tunnel destination 25.0.0.2
+tunnel mode gre ip
+exit
+
+
+
+ROUTER 2 TUNNEL CONFIGURATON:----
+
+Router(config)#int tunnel 0
+Router(config-if)#ip address 10.0.12.2 255.255.255.0(/24)
+Router(config-if)#tunnel source se0/0/0
+Router(config-if)#tunnel destination 15.0.0.1
+Router(config-if)#tunnel mode gre ip
+
+
+int tunnel 0
+ip address 10.0.12.2 255.255.255.0
+tunnel source se 0/3/0
+tunnel destination 15.0.0.1
+tunnel mode gre ip
+
+
+TUNNEL SOURCE===OWN ROUTER SERIAL PORT NO****************
+TUNNEL DESTINATION==DESTINATION ROUTER SERIAL PORT IP ADD********************
+=================================================================
+Router#SH IP INT BRief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        192.168.1.1     YES manual up                    up 
+FastEthernet0/1        unassigned      YES unset  administratively down down 
+Serial0/3/0            15.0.0.1        YES manual up                    up 
+Loopback0              1.1.1.1         YES manual up                    up 
+Tunnel0                10.0.12.1       YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+============================================================================
+Router#PING 10.0.12.2
+
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.0.12.2, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 2/9/16 m
+
+==========================================================================
+Router#sh ip int tunnel 0
+Tunnel0 is up, line protocol is up
+  Internet address is 10.0.12.1/24
+  Broadcast address is 255.255.255.255
+==========================================================================
+Router#sh interfaces tunnel 0
+Tunnel0 is up, line protocol is up (connected)
+  Hardware is Tunnel
+  Internet address is 10.0.12.1/24
+  MTU 17916 bytes, BW 100 Kbit/sec, DLY 50000 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation TUNNEL, loopback not set
+  Keepalive not set
+  Tunnel source 15.0.0.1 (Serial0/3/0), destination 25.0.0.2
+  Tunnel protocol/transport GRE/IP
+========================================================================
+R    2.0.0.0/8 [120/2] via 15.0.0.5, 00:00:20, Serial0/3/0
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.0.12.0/24 is directly connected, Tunnel0
+L       10.0.12.1/32 is directly connected, Tunnel0
+=============================================================================
+Testing
+========
+
+R1#traceroute 2.2.2.2
+Type escape sequence to abort.
+Tracing the route to 2.2.2.2
+
+  1   15.0.0.5        1 msec    4 msec    1 msec    
+  2   25.0.0.2        2 msec    1 msec    8 msec   
+
+**Traffic is not going through the Tunnel it is taking normal path.
+
+
+So we have to configure Static Routing to send the traffic through the  VPN Tunnel(GRE)
+
+R1(config)#ip route 2.2.2.2 255.255.255.255 10.0.12.2
+
+
+R2(config)#ip route 1.1.1.1 255.255.255.255 10.0.12.1
+
+
+Again Testing
+
+R1#traceroute 2.2.2.2
+Type escape sequence to abort.
+Tracing the route to 2.2.2.2
+
+  1   10.0.12.2       14 msec   2 msec    6 msec    
+
+
+Now it is going through the Tunnel

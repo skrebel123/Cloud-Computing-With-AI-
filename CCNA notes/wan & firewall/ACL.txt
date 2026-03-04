@@ -1,0 +1,188 @@
+ACL Overview
+===========
+ACLs, known for their ability to filter traffic as it either comes into or leaves an interface, can also be used for other purposes, including restricting remote access (virtual type terminal, or VTY) to an IOS device, filtering routing information, prioritizing traffic with queuing, triggering phone calls with dial-on-demand routing (DDR), changing the administrative distance of routes, and specifying traffic to be
+protected by an IPSec VPN, among many others. This chapter focuses on restricting the flow of traffic to or through a router.
+
+Definition
+ACLs are basically a set of commands, grouped together by a number or name, that
+are used to filter traffic entering or leaving an interface. ACL commands define
+specifically which traffic is permitted and denied. ACLs are created in Global
+Configuration mode.
+
+Once you create your group of ACL statements, you must activate them. For
+filtering traffic between interfaces, the ACL is activated in Interface Subconfiguration mode. This can be a physical interface, such as ethernet0 or serial0, or a logical interface, such as ethernet0.1 or serial0.1. When activating an ACL on an interface, you must specify in which direction the traffic should be filtered:
+■ Inbound (as the traffic comes into an interface from an external source)
+■ Outbound (before the traffic exits an interface to the network)
+With inbound ACLs, the IOS compares the packet to the interface ACL before the
+IOS forwards it to another interface. With outbound ACLs, the packet is received on
+an interface and forwarded to the exit interface; the IOS then compares the packet to
+the ACL.
+One restriction that ACLs have is that they cannot filter traffic that the router
+itself originates. For example, if you execute a ping or traceroute from the router,
+or if you telnet from the router to another device, ACLs applied to the router’s
+interfaces cannot filter these connections outbound. However, if an external device
+tries to ping, traceroute, or telnet to the router or through the router to a remote
+destination, the router can filter these packets.
+
+For inbound ACLs, the ACL
+is processed before any further processing
+by the IOS; with outbound ACLs, the packet
+is routed to the interface and then the
+outbound ACL is processed. ACLs applied
+outbound to interfaces cannot be used to
+filter traffic the IOS originates itself.
+
+Filtered Information Standard IP ACL 	Extended IP ACL
+Source address		Yes 			Yes
+Destination address 	No 			Yes
+IP protocol (i.e., TCP or UDP) No 		Yes
+Protocol information (i.e., port number) No	 Yes
+
+Processing
+
+ACLs are basically statements that are grouped together by either a name or number.
+Within this group of statements, when a packet is processed by an ACL, the IOS will
+go through certain steps in finding a match against the ACL statements. ACLs are
+processed top-down by the IOS. Using a top-down approach, a packet is compared to
+the first statement in the ACL, and if the IOS finds a match between the packet and
+the statement, the IOS will execute one of two actions included with the statement:
+permit or deny.
+If the IOS doesn’t find a match of packet contents to the first ACL statement,
+the IOS will proceed to the next statement in the list, again going through the same
+matching process. If the second statement matches the packet contents, the IOS
+executes one of the two actions. If there is no match on this statement, the IOS will
+keep on going through the list until it finds a match. If the IOS goes through the
+entire list and doesn’t find a match in the ACL statements to the ACL contents,
+the router will drop the packet. The top-down processing of ACLs brings out the
+following very important points:
+■ Once a match is found, no further statements are processed in the list.
+■ The order of statements is important, since after the first match, the rest of
+the statements are not processed.
+■ If no match is found in the list, the packet is dropped.
+
+Implicit Deny
+Another important aspect of the top-down process is that if the router compares a
+packet to every statement in the list and does not find a match against the packet
+contents, the router will drop the packet. This process is referred to as implicit deny.
+At the end of every ACL is an invisible statement that drops all traffic that doesn’t
+match any of the preceding statements in the ACL. Given this process, it makes no
+sense to have a list of only deny statements, since the implicit deny drops all traffic
+anyway. Therefore, every ACL should have at least one permit statement; otherwise,
+an ACL with only deny statements will drop all traffic, given the deny statements
+and the hidden implicit deny statement.
+
+Important Configuration Guidelines
+Configuring an ACL is not a simple process. To get the configuration process right,
+you should be guided by the following list:
+■ Order of statements is important: Put the most restrictive statements at the
+top of the list and the least restrictive at the bottom.
+■ ACL statements are processed top-down until a match is found, and then no
+more statements in the list are processed.
+■ If no match is found in the ACL, the packet is dropped (implicit deny).
+■ Each grouping of ACL statements needs either a unique number or a unique
+name.
+■ The router cannot filter traffic that it, itself, originates.
+■ Only one IP ACL can be applied to an interface in each direction (inbound
+and outbound)—two or more ACLs cannot be applied inbound or outbound
+to the same interface. (Actually, one ACL for each protocol, such as IP and
+IPX, can be applied to an interface in each direction.)
+
+Applying an empty ACL to an interface permits all traffic by default: in order
+for an ACL to have an implicit deny statement, you need at least one actual
+permit or deny statement in the ACL.
+
+ACL Type ACL Numbers
+IP Standard 1–99, 1300–1999
+IP Extended 100–199, 2000–2699
+
+Activating an ACL
+
+At the end of the ip access-group command, you must specify which ACL
+you are activating and in which direction:
+■ in As traffic comes into the interface
+■ out As traffic leaves the interface
+
+
+Standard Numbered ACLs
+Standard IP ACLs are simple and easy to configure. First, standard IP ACLs filter on
+only the source IP address in an IP packet. Use the following command to create an
+entry in a standard numbered IP ACL:
+Router(config)# access-list 1-99|1300-1999 permit|deny
+source_IP_address
+[wildcard_mask] [log]
+With a standard numbered IP ACL, you can use list numbers of 1–99 and 1300–
+1999. Following this is the action the router should take if there is a match on the
+condition. The condition is based solely on the source IP address. You enter this
+followed by an optional wildcard mask. If you omit the mask, it defaults to 0.0.0.0—
+an exact match is required in order to execute the action.
+
+
+
+Extended Numbered ACLs
+Extended IP ACLs are much more flexible in what you can match on than standard
+ACLs. Extended ACLs can match on all of the following information:
+■ Source and destination IP addresses
+■ TCP/IP protocol (IP, TCP, UDP, ICMP, and so on)
+■ Protocol information, such as port numbers for TCP and UDP, or message
+types for ICMP
+
+Operators With TCP and UDP, you can specify the source, destination, or both
+source and destination port numbers or names. To specify how to perform the match,
+you must configure an operator. The operator tells the router how to match on the
+port number(s) or names. Table 22-5 lists the valid operators for TCP and UDP
+ACL entries. Note that these operators apply only to TCP and UDP connections.
+Other IP protocols do not use them. If you omit the port number or name, the ACL
+looks for a match on all TCP or UDP connections.
+
+
+Ports Numbers and Names For TCP and UDP connections, you can list
+either the name or the number of the port. For example, if you wanted to match
+on telnet traffic, you could use either the keyword telnet or the number 23.
+Table 22-6 lists some of the most common port names and numbers for TCP
+connections.
+
+Operator 		Explanation
+lt 			Less than
+gt 			Greater than
+neq 			Not equal to
+eq 			Equal to
+range 			Range of port numbers
+
+Port Name Command Parameter Port Number
+FTP 	Data 	ftp-data 	20
+FTP 	Control ftp 		21
+Telnet 	telnet 			23
+SMTP 	smtp 			25
+WWW 	www 			80
+POP3 	pop3 			110
+
+Port Name Command Parameter Port Number
+DNS 	Query 	dns 	53
+TFTP 	tftp 		69
+SNMP 	snmp 		161
+IP 	RIP 	rip 	520
+
+
+ACL Placement
+This section covers design issues with ACLs—that is, where you should place
+ACLs of a given type (standard or extended). In other words, given the source and
+destination that you are filtering, on what router and what interface on that router
+should you activate your ACL? This section covers some of the important points you
+should consider when determining where to put your ACLs.
+First, don’t go crazy with ACLs and create dozens and dozens of them across all
+of your routers. This makes testing and troubleshooting your filtering rules almost
+impossible. In a campus network, for example, ACL configuration and filtering is
+on the layer 3 switch or router at the distribution layer that connects a building or
+floor to the campus backbone. This model was discussed in Chapter 14: the core,
+distribution, and access layers.
+The second point is that you will want to limit the number of statements in
+your ACL. An ACL with hundreds of statements is almost impossible to test
+and troubleshoot. It’s not unusual to see an ACL have a lot of unnecessary and
+overlapping commands that have been carried over from years past.
+As to where you should place your ACLs, the following two rules hold true in
+most situations:
+■ Standard ACLs should be placed as close to
+the destination devices as possible.
+■ Extended ACLs should be placed as close to
+the source devices as possible.
+

@@ -1,0 +1,207 @@
+Router(config)#INT FA 0/0
+
+Router(config-if)#ip address 192.168.90.1 255.255.255.0
+Router(config-if)#no sh
+
+
+
+Router(config)#username sadruddin password ccna
+
+Router(config)#line vty 0 4
+Router(config-line)#login local
+Router(config-line)#exit
+
+Router(config)#enable password ccna
+=========================================================
+PC>ping 192.168.90.1
+
+Pinging 192.168.90.1 with 32 bytes of data:
+
+Reply from 192.168.90.1: bytes=32 time=0ms TTL=255
+Reply from 192.168.90.1: bytes=32 time=0ms TTL=255
+Reply from 192.168.90.1: bytes=32 time=0ms TTL=255
+Reply from 192.168.90.1: bytes=32 time=2ms TTL=255
+
+Ping statistics for 192.168.90.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 2ms, Average = 0ms
+
+
+PC>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: sadruddin
+Password: 
+Router>
+
+Router>en
+Password: 
+Router#
+
+
+Router#sh ip int brief 
+Interface              IP-Address      OK? Method Status                Protocol
+ 
+FastEthernet0/0        192.168.90.1    YES manual up                    up
+ 
+FastEthernet0/1        unassigned      YES unset  administratively down down
+ 
+Vlan1                  unassigned      YES unset  administratively down down
+Router#
+
+================================================================================================================================================================================
+Router(config)#int fa 0/0
+
+Router(config-if)#ip address 192.168.90.1 255.255.255.0
+Router(config-if)#no sh
+
+
+
+Router#sh ip int brief 
+Interface              IP-Address      OK? Method Status                Protocol
+ 
+FastEthernet0/0        192.168.90.1    YES manual up                    up
+ 
+FastEthernet0/1        unassigned      YES unset  administratively down down
+ 
+Vlan1                  unassigned      YES unset  administratively down down
+
+Router(config)#hostname R1
+
+
+R1(config)#username a3 password 9632
+
+R1(config)#enable password ccna
+
+R1#wr
+Building configuration...
+[OK]
+R1#
+-----------------------------------------------------------------------------
+R1(config)#aaa new-model 
+R1(config)#
+R1(config)#
+R1(config)#tac
+R1(config)#tacacs-server ke
+R1(config)#tacacs-server key 123456789
+R1(config)#tac
+R1(config)#tacacs-server ho
+R1(config)#tacacs-server host 192.168.90.2
+R1(config)#
+R1(config)#
+R1(config)#
+R1(config)#radi
+R1(config)#radius-server key ccnasecurity
+R1(config)#radi
+R1(config)#radius-server ho
+R1(config)#radius-server host 192.168.90.3
+R1(config)#
+R1(config)#
+R1(config)#aaa authen
+R1(config)#aaa authentication ?
+  enable  Set authentication lists for enable.
+  login   Set authentication lists for logins.
+  ppp     Set authentication lists for ppp.
+R1(config)#aaa authentication log
+R1(config)#aaa authentication login ?
+  WORD     Named authentication list.
+  default  The default authentication list.
+R1(config)#aaa authentication login gr
+R1(config)#aaa authentication login de
+R1(config)#aaa authentication login default gr
+R1(config)#aaa authentication login default group ta
+R1(config)#aaa authentication login default group tacacs+ ?
+  enable  Use enable password for authentication.
+  group   Use Server-group.
+  local   Use local username authentication.
+  none    NO authentication.
+  <cr>
+R1(config)#aaa authentication login default group tacacs+ gr
+R1(config)#aaa authentication login default group tacacs+ group ra
+R1(config)#aaa authentication login default group tacacs+ group radius ?
+  enable  Use enable password for authentication.
+  group   Use Server-group.
+  local   Use local username authentication.
+  none    NO authentication.
+  <cr>
+R1(config)#aaa authentication login default group tacacs+ group radius local
+R1(config)#aaa authentication login default group tacacs+ group radius local ?
+  enable  Use enable password for authentication.
+  group   Use Server-group.
+  none    NO authentication.
+  <cr>
+R1(config)#aaa authentication login default group tacacs+ group radius local 
+R1(config)#
+R1(config)#
+R1(config)#
+R1(config)#line vty 0 4
+R1(config-line)#login authen
+R1(config-line)#login authentication de
+R1(config-line)#login authentication default 
+R1(config-line)#
+-------------------------------------------------------------------------------------
+PC>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: a1
+Password: 
+% Login invalid
+
+Username: 
+Username: 
+
+[Connection to 192.168.90.1 closed by foreign host]
+PC>
+PC>
+PC>
+PC>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: a2
+Password: 
+R1>exit
+
+[Connection to 192.168.90.1 closed by foreign host]
+PC>
+PC>
+PC>
+PC>
+PC>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: a1
+Password: 
+% Login invalid
+
+Username: a2
+Password: 
+% Login invalid
+
+Username: a3
+Password: 
+R1>en
+Password: 
+R1#sh ip int br
+R1#sh ip int brief 
+Interface              IP-Address      OK? Method Status                Protocol
+ 
+FastEthernet0/0        192.168.90.1    YES manual up                    up
+ 
+FastEthernet0/1        unassigned      YES NVRAM  administratively down down
+ 
+Vlan1                  unassigned      YES NVRAM  administratively down down
+R1#
+=========================================================================================

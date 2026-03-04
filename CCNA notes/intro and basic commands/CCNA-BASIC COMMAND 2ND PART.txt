@@ -1,0 +1,161 @@
+
+==============================================================
+16.How to set console or userexec mode password
+
+Router(config)#line console 0
+Router(config-line)#password sourav
+Router(config-line)#login
+
+17.how to encrypt all kind of password
+Router(Config)#service password-encryption  [md7 algorithm used here]
+
+18.how to view the current clock of router
+Router# sh clock
+
+19.how to set clock in Router
+
+Router# clock set 11:41:00 29 june 2020
+
+20.How to view previously used all commands
+
+Router#sh history[by default history size is 10]
+
+21.How to change the history size(0-256)
+
+Router#terminal history size 50
+
+22.How to view History is enable dor not and the current history size
+
+Router#sh terminal
+
+23.How to view the IOS Version and Default configuration register value
+
+Router# sh version [configuration register value=0x2102]
+
+0x==>indicates the hexadecimal no system
+
+Flip Flop-Binary Cell Used to store one bit of Information(1 or 0) at a time.
+
+Register-->It is a collection of Flip Flops
+
+Configuration Register-It is a special register where Router's configuration file will be stored.(when we save running-config into startup-config)
+
+Default Configuration Register Address-->0x2102
+
+0x=Indicates 2102 is in Hexa decimal number system.
+
+2102=Configuration Register Values.
+
+
+
+24.How to Reload the Router 
+
+Router# Reload
+
+25.How to change Router's Hostname
+
+Router(config)#hostname <Rupak>
+Rupak(config)#
+
+26.
+Router Interface NomenClature
+
+LAN PORT(is used to connect switch or pc)
+========
+E0=ETHERNET 0(10 Mbps)
+fa 0/0==> fa==>fast ethernet(10/100 mbps)  0=slot no 0=port no
+gi 0/0===>gi= gigabit ethernet(1 Gbps)  0=slot no 0=port no
+
+WAN PORT/SERIAL PORT
+=====================
+serial 0==> serial   0=Port no 
+serial 0/0= serial   0=slot no 0=port no
+serial 0/3/0==>serial 0=Device ID 3=slot no 0=port no(For WIC 1T)
+ wic 1T
+===========
+s0/3/0
+s0/2/0
+s0/1/0
+s0/0/0
+==========================
+wic-2t
+===========================
+s0/3/0
+s0/3/1
+=======
+s0/2/0
+s0/2/1
+=======
+s0/1/0
+s0/1/1
+=======
+s0/0/0
+s0/0/1
+===========
+s0/3/0==>serial 0=Device ID 3=slot no 0=port no(For WIC 2T)
+s0/3/1==>serial 0=Device ID 3=slot no 1=port no(For WIC 2T)
+
+ADMIN PORT
+===========
+1.CONSOLE PORT=USED TO CONFIGURE LOCAL ROUTER IOS USING CONSOLE CABLE OR ROLLED OVER CABLE
+
+2.AUX PORT OR AUXILLIARY PORT=USED TO CONNECT THE REMOTE ROUTER TO CONFIGURE THE IOS.USUALLY MODEM ARE CONECTED HERE.
+
+How to set IP and S.M on any Router Interface?
+
+Router(config)#int fa 0/0
+Router(config-if)# ip add 192.168.90.1 255.255.255.0
+Router(config-if)#no sh
+
+27.How to verify Router Interface Information In Brief
+
+Router#sh ip int brief
+
+28.How to verify Router Interface Information In Details
+
+Router# sh interfaces
+
+29.How to Set Transmission Mode(Simplex//Half Duplex//Full Duplex or Duplex)and Speed(10//100//1000 Mbps) of any rouuter Fast/Gigabit ethernet port****?
+
+
+Router(config)#int fa 0/0
+Router(config-if)#speed ?
+  10    Force 10 Mbps operation
+  100   Force 100 Mbps operation
+  auto  Enable AUTO speed configuration
+Router(config-if)#speed 10
+Router(config-if)#duplex ?
+  auto  Enable AUTO duplex configuration
+  full  Force full duplex operation
+  half  Force half-duplex operation
+Router(config-if)#duplex half
+
+Router#sh run
+
+interface FastEthernet0/0((we have set these value))
+ ip address 192.168.90.1 255.255.255.0
+ duplex half
+ speed 10
+!
+interface FastEthernet0/1((by default value))
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+
+30.How to view IOS(*.bin) in Cisco Router
+
+Router#sh flash:
+
+31.if SOMETIMES Router stuck....
+
+Translating "end"...domain server (255.255.255.255) % Name lookup aborted
+
+
+ctrl+shift+6
+
+Router#
+
+32.How to delete IOS in Flash
+
+Router#delete flash:   [don't use this commands in Router.]

@@ -1,0 +1,117 @@
+CISCO CERTIFICATION LEVEL
+=============================
+
+HO==>SANFRANCISCO
+
+The name "Cisco" was derived from the city name San Francisco, which is why the company's engineers insisted on using the lower case "cisco" in its early years. The logo is intended to depict the two towers of the Golden Gate Bridge.
+
+1.CCNA-CISCO CERTIFIED NETWORK ASSOCIATE
+  CCNS-CISCO CERTIFIED NETWORK SPECIALIST
+2.CCNP-CISCO CERTIFIED NETWORK PROFESSIONAL
+3.CCIE-CISCO CERTIFIED INTERNETWORK EXPERT
+4.CCAr-CISCO CERTIFIED ARCHITECT
+
+CISCO GLOBAL EXAM PAPER CODE==>200-301
+EXAM PRICE=$354==APPROX 30444/- INR
+FOR GLOBAL EXAM U HAVE TO REGISTER URSELF IN PEARSON VUE
+EXAM TIME-1-1.5HRS
+FULL MARKS=1000
+PASSING SCORE=810 OR 81%
+EXAM DUMPS U HAVE TO PURCHASE FOR UR GLOBAL EXAM PREPARATION.
+
+EXAM DUMPS=COLLECTIONS OF MULTIPLE Q & A
+
+VALIDITY=3YRS
+2025====>2028===>2031
+==========================================================================
+INTRODUCTION TO ROUTER
+----------------------
+ROUTER IS A L3 DEVICE(WORKS IN NETWORK LAYER) USED TO COMMUNICATE BETWEEN TWO OR MORE THAN TWO NETWORK.ALSO USED TO TRANSFER DATA PACKETS FROM ONE NW TO ANOTHER THROUGH THE BEST POSSIBLE ROUTE 
+
+***
+METRIC IS A PARAMETER BY WHICH A ROUTING PROTOCOL SELECT ITS BEST ROUTE TO REACH TO THE DESTINATION.
+
+TYPES OF ROUTER
+--------------------
+1.MODULAR ROUTER---MODULES[LIKE WIC-1T(ONE SLOT ONE PORT) OR WIC-2T(ONE SLOT TWO PORT)] CAN BE ATTACHED.
+WIC=WAN INTERFACE CARD.
+
+2.FIXED ROUTER--NO MODULES CAN BE ATTACHED.
+---------------------------------------------------------------------------
+IN ANOTHER WAY
+
+1.ISR ROUTER---U CAN CONFIGURE VOIP,NAT,ACL OR ANY IP SCURITY,VPN LIKE 2811
+
+2.NON ISR ROUTER-->NO FOR SECURITY CONFIGURATIONS.ONLY USED FOR ROUTING AND BASIC FUNCTIONS.LIKE 800
+
+*ISR=INTEGRATED SERVICE ROUTER
+--------------------------------------------------------------------------
+IN ANOTHER WAY
+1.ACCESS LAYER ROUTER(LOW HW-LOW CAPACITY--800/1700-->HOME/SMALL OFFICE USE)
+
+2.DISTRIBUTION LAYER ROUTER(MEDIUM CAPACITY-MEDIUM HW--2800/2900--FOR MID SIZE ISP-->TIKONA,ALLIANCE,MEGHAMALA BROADBAND)
+
+3.CORE LAYER ROUTER(HIGH SERIES ROUTER--HIGH HW CAPACITY-->7200(GLOBAL ISP USED THIS)
+============================================================================
+WHAT IS THE FUNCTION OF ROUTER
+
+FORWARDING PACKET FROM ONE NETWORK TO ANOTHER THROUGH BEST POSSIBLE ROUTE AMONG ALL POSSIBLE ROUTE.
+===========================================================================
+ROUTING PROTOCOLS
+--------------------
+IT IS USED TO FIND OUT THE BEST POSSIBLE ROUTE TO REACH TO DESTINATION FROM THE SOURCE, AMONG ALL POSSIBLE ROUTE.
+
+e.g-->RIP,EIGRP,OSPF,BGP,IS-IS etc.
+RIP-ROUTING INFORMATION PROTOCOL
+EIGRP-ENHANCED INTERIOR GATEWAY ROUTING PROTOCOL
+OSPF-OPEN SHORTEST PATH FIRST
+BGP-BORDER GATEWAY PROTOCOL
+IS-IS->INTERMEDIATE SYSTEM-INTERMEDIATE SYSTEM 
+=============================================================
+ROUTED PROTOCOLS
+-----------------
+
+BY WHICH WE CAN TRANSFER DATA PACKET FROM ONE INTERFACE TO ANOTHER OR ONE NW TO ANOTHER.e.g->IP,IPX,APPLE TALK etc.
+
+IPX-INTERNETWORK PACKET EXCHANGE-NOVEL NW
+============================================================
+ROUTER MODES
+------------
+1.USER EXEC MODE-->Router>==>IT'S A STEPPING STONE TO ENTER TO ENABLE MODE & TO RUN SOME BASIC COMMANDS
+
+2.ENABLE MODE OR PRIVILDGE MODE===>Router#==>ALL SHOW AND DEBUG COMMANDS ARE USED HERE.
+
+3.GLOBAL CONFIGURATION MODE===>Router(Config)#-->FROM HERE U CAN CONFIURE THE ROUTER
+
+4.INTERFACE MODE==>Router(Config-if)#-->TO CONFIGURE THE ROUTER INTERFACE LIKE SETTING THE IP.
+
+5.SUB INTERFACE MODE==>Router(Config-Subif)#-->IF YOU DIVIDE ONE PHYSICAL INTERFACE TO MULTIPLE LOGICAL INTERFACE.TO CONFIGURE THE INTER-VLAN
+
+6.ROUTER CONFIGURATION MODE==>Router(Config-Router)#-->TO CONFIGURE THE ROUTING PROTOCOLS AND ITS CONFIGURATION.
+
+7.ROM MONITOR MODE OR ROMMON MODE.===>ROMMON1>TO BREAK THE PASSWORD, TROUBLESHOOTING AND TO RESTORE THE IOS IF NO IOS IS PRESENT IN THE ROUTER.
+============================================================
+IOS=INTERNETWORK OPERATING SYSTEM---> IT IS KNOWN AS KERNEL WHICH IS INDISPENSABLE PART OF AN OPERATING SYSTEM.
+
+In an operating system (OS), the kernel is the core component that acts as the bridge between the hardware and the software. It manages the system's resources (like memory and CPU time) and provides essential services for other parts of the OS and applications to run.
+
+c2800nm-advipservicesk9-mz.124-15.T1.bin
+
+As an example,consider the image name from the preceding show flash command:
+c1841-advipservicesk9-mz.124-6.T7.bin, which is from a router. Here’s an explanation of the nomenclature that Cisco uses for their IOS image names:
+
+The c1841 refers to the name of the platform on which the image will run.This is important because different router models have different processors,and an image compiled for one processor or router model will typically not run on a different model.
+
+The advipservicesk9 refers to the features included in this IOS version,
+commonly referred to as the feature set. In this example, the IOS is the
+advanced IP services and the k9 refers to the inclusion of encryption support
+
+The mz or z means that the image is compressed and must be uncompressed before loading/running. If you see l (the letter l, not the number 1) here,this indicates where the IOS image is run from. The l indicates a relocatable image and that the image can be run from RAM. Remember that some images can run directly from flash, depending on the router model.
+
+The 124-6.T7 indicates the software version number of the IOS. In this instance, the version is 12.4(6)T7. Images names with T indicate new features, and without the T the mainline (only bug fixes are made to it).
+
+Finally, the .bin at the end indicates that this is a binary image.
+==========================================================================
+==========================================================================
+
+

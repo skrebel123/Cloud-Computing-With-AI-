@@ -1,0 +1,261 @@
+DYNAMIC ROUTING PROTOCOL
+========================
+RIP=ROUTING INFORMATION PROTOCOL
+=================================
+1.RIP HAS 2 VERSION 
+	A)RIP V1(D.V.R.P)
+	B)RIP V2(ADV D.V.R.P)
+
+
+2.DISTANCE VECTOR ROUTING PROTOCOL(RIP V1) & ADVANCED DISTANCE VECTOR ROUTING PROTOCOL(RIP V2)
+
+
+3.RIP V1 UPDATE ITS ROUTING TABLE WITH BROADCAST(255.255.255.255) & RIP V2 UPDATE ITS ROUTING TABLE WITH MULTICAST(224.0.0.9)
+
+4.METRIC OF RIP IS "HOP COUNT"
+
+***
+METRIC IS A PARAMETER BY WHICH A ROUTING PROTOCOL SELECT ITS BEST ROUTE TO REACH TO THE DESTINATION.
+
+
+HOP=THE TOTAL NO OF ROUTER THAT HAS TO BE CROSSED TO REACH TO THE DESTINATION EXCEPT MY OWN ROUTER.
+
+
+R.S==MAI==PST==ESP==CHAND==MGRD==CENTR==GIRISH PARK==SOVA==SYHAMBAZAR=BELGACHI==DUMDUM==NOAPARA
+
+5.AD VALUE FOR RIP IS 120
+
+6.RIP(V1 & V2) HAS 4 TIMER
+	A)UPDATE TIMER=30SEC
+	B)INVALID TIMER=180SEC(30+150)SEC
+	C)FLUSH TIMER=240SEC(180+60)SEC
+	D)HOLD DOWN TIME=180 SEC
+
+7.CONVERGENCE TIME IS HIGHER i.e IT IS SLOWER PROCESS
+
+8.MAX HOP COUNT=(0-15)=16
+
+9.USE PORT NO 520 UDP
+================================================
+RIP V1 				RIP V2
+==================================================
+1.D.V.R.P			1.ADVANCED D.V.R.P
+2.NOT SUPPORT SUBNETTING	2.SUPPORT SUBNETTING
+3.CLASSFULL			3.CLASSFUL+CLASSLESS
+4.NOT SUPPORT AUTHENTICATION	4.SUPPORT MD5 AUTHENTICATION
+5.NOT SUPPORT TRIGGER UPDATE	5.SUPPORT TRIGGER UPDATE
+6.SENDS UPDATE THROUGH BROADCAST 6.SEND UPDATE THROUGH MULTICAST
+255.255.255.255			224.0.0.9
+
+================================================================
+RIP CONFIGURATION 
+================
+STEP 1
+=======
+BASIC SETTINGS(IP+CLOCK RATE+BANDWIDTH(DCE)) IN ALL THE ROUTER AS PER DIAGRAM
+
+R1
+===
+Router>en
+Router#conf t
+Router(config)#router rip
+Router(config-router)#network 192.168.90.0
+Router(config-router)#network 10.0.0.0
+
+R2
+====
+R2>EN
+R2#CONF T
+R2(config)#router rip
+R2(config-router)#network 10.0.0.0
+R2(config-router)#network 20.0.0.0
+R2(config-router)#network 192.168.100.0
+
+
+R3
+===
+R3>EN
+R3#conf t
+R3(config)#router rip
+R3(config-router)#network 192.168.110.0
+R3(config-router)#network 20.0.0.0
+
+==========================================
+HOW TO VIEW ROUTING TABLE
+==========================
+Router#sh ip route 
+
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+R    20.0.0.0/8 [120/1] via 10.1.1.2, 00:00:08, Serial0/3/0
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+R    192.168.100.0/24 [120/1] via 10.1.1.2, 00:00:08, Serial0/3/0
+R    192.168.110.0/24 [120/2] via 10.1.1.2, 00:00:08, Serial0/3/0
+
+
+C=DIRECTLY CONNECTED ROUTE
+R=RIP ROUTE
+120=DEFAULT AD VALUE
+1=HOP NO
+00:00:08=UPDATE TIMER
+
+HOW YOU CAN VIEW THE ONLY RIP ROUTE
+===================================
+Router#sh ip route RIP
+R    20.0.0.0/8 [120/1] via 10.1.1.2, 00:00:21, Serial0/3/0
+R    192.168.100.0/24 [120/1] via 10.1.1.2, 00:00:21, Serial0/3/0
+R    192.168.110.0/24 [120/2] via 10.1.1.2, 00:00:21, Serial0/3/0
+
+=================================================================
+HOW TO VIEW WHICH PROTOCOL IS RUNNING
+
+Router#sh ip PROTOCOLS
+
+Routing Protocol is "rip"*****************
+Sending updates every 30 seconds, next due in 22 seconds
+Invalid after 180 seconds, hold down 180, flushed after 240
+
+Default version control: send version 1**********, receive any version
+  Interface             Send  Recv  Triggered RIP  Key-chain
+  FastEthernet0/0       1     2 1   
+  Serial0/3/0           1     2 1   *************************
+
+Maximum path: 4
+Routing for Networks:
+	10.0.0.0
+	192.168.90.0
+
+Routing Information Sources:
+	Gateway         Distance      Last Update
+	10.1.1.2             120      00:00:11
+Distance: (default is 120)
+=================================================================================
+how will u verify that rip v1 or rip v2 is configured and RIPV1 USE BROADCAST AND RIP V2 USE MULTICAST
+==============================================================
+Router#debug ip rip
+
+RIP: sending  v1 update to 255.255.255.255 via Serial0/3/0 (10.1.1.1)===>FOR RIP V1
+
+RIP: sending  v2 update to 224.0.0.9 via Serial0/3/0 (10.1.1.1)===>RIP V2
+
+TO STOP DEBUGGING
+
+Router#undebug all
+=============================================================================
+how to stop sending update but can receive update by Passive Interface//HOW TO CHECK THE DIFFERENT TIMERS.
+
+
+RIP(V1 & V2) HAS 4 TIMER
+	A)UPDATE TIMER=30SEC
+	B)INVALID TIMER=180SEC(30+150)SEC
+	C)FLUSH TIMER=240SEC(180+60)SEC
+	D)HOLD DOWN TIME=180 SEC
+
+============================================================================
+R2(config)#router rip
+R2(config-router)#passive-interface serial 0/3/0
+===================================================
+
+Router#sh ip route 
+after 30 sec
+============
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+R    20.0.0.0/8 [120/1] via 10.1.1.2, 00:01:05, Serial0/3/0
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+R    192.168.100.0/24 [120/1] via 10.1.1.2, 00:01:05, Serial0/3/0
+R    192.168.110.0/24 [120/2] via 10.1.1.2, 00:01:05, Serial0/3/0
+
+after 180 sec
+==============
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+R    20.0.0.0/8 is possibly down, routing via 10.1.1.2, Serial0/3/0
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+R    192.168.100.0/24 is possibly down, routing via 10.1.1.2, Serial0/3/0
+R    192.168.110.0/24 is possibly down, routing via 10.1.1.2, Serial0/3/0
+
+
+after 240 Sec
+==============
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+
+to remove passive-interface
+
+R2(config)#router rip
+R2(config-router)#no passive-interface  serial 0/3/0
+
+Router#sh ip route rip
+R    20.0.0.0/8 [120/1] via 10.1.1.2, 00:00:14, Serial0/3/0
+R    192.168.100.0/24 [120/1] via 10.1.1.2, 00:00:14, Serial0/3/0
+R    192.168.110.0/24 [120/2] via 10.1.1.2, 00:00:14, Serial0/3/0
+======================================================================================================================================================================
+how to configure RIP V2
+
+RIP v2 CONFIGURATION 
+====================
+STEP 1
+=======
+BASIC SETTINGS(IP+CLOCK RATE+BANDWIDTH(DCE)) IN ALL THE ROUTER AS PER DIAGRAM
+
+R1
+===
+Router>en
+Router#conf t
+Router(config)#router rip
+Router(config-router)#network 192.168.90.0
+Router(config-router)#network 10.0.0.0
+R2(config-router)#version 2
+
+R2
+====
+R2>EN
+R2#CONF T
+R2(config)#router rip
+R2(config-router)#net
+R2(config-router)#network 10.0.0.0
+R2(config-router)#network 20.0.0.0
+R2(config-router)#network 192.168.100.0
+R2(config-router)#version 2
+
+
+R3
+===
+R3>EN
+R3#conf t
+R3(config)#router rip
+R3(config-router)#network 192.168.110.0
+R3(config-router)#network 20.0.0.0
+R2(config-router)#version 2
+
+==========================================
+Router#sh ip protocols 
+Routing Protocol is "rip"
+
+Default version control: send version 2, receive 2
+  Interface             Send  Recv  Triggered RIP  Key-chain
+  FastEthernet0/0       2     2     
+  Serial0/3/0           2     2     
+=====================================================
+router#debug ip rip
+
+
+router#undebug all
+
+RIP: sending  v2 update to 224.0.0.9 via FastEthernet0/0 (192.168.90.1)
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+ROUTER 5
+==========
+RIP=120
+OSPF=110
+EIGRP=90/170

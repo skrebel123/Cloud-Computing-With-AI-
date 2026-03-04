@@ -1,0 +1,36 @@
+VOIP(VOICE OVER INTERNET PROTOCOL)
+=====================================
+Voice over Internet Protocol (VoIP) is a technology that allows users to make voice calls and other types of communication over the internet instead of using a traditional phone line. VoIP is also known as IP telephony.
+
+[Voice over LTE {LTE stands for Long Term Evolution}(VoLTE) is a mobile network technology that allows users to make voice calls over LTE/4G networks.]
+
+USING INTERNET WE CAN TRANSFER BOTH DATA & VOICE AT A TIME.
+
+An uplink port on a network switch is a port that connects a switch to another device on a different network, such as a router or switch. Uplink ports are similar to ethernet ports, but they are designed to handle faster speeds and higher bandwidth. They also often have special features, like auto-negotiation and flow control, to help ensure reliable connections. 
+
+1.CISCO ROUTER MINIMUM 2811
+2.CISCO SWITCH
+3.CISCO VOIP PHONE(HARD + SOFT)
+
+HARD PHONE=PHYSICAL PHONE
+SOFT PHONE=SOFTWARE PHONE.(CISCO IP COMMUNICATOR[CIPC] & CISCO JABBER.)
+
+IF I WANT TO GIVE POWER TO THE IPPHONE WE HAVE TWO OPTION
+
+1.DIRECT POWER USING ADAPTER==>POWER BRICK
+2.POWER THROGH A ETHERNET CABLE WHICH DRAW POWER FROM A SPECIAL SWITCH KNOWN AS POE SWITCH(POE=POWER OVER ETHERNET)
+
+TO MOVE DATA & VOICE AT A TIME WE NEED TWO SEPARATE VLAN 
+
+A)DATA VLAN=USED TO TRANSFER NORMAL DATA  USING TRUNK LINK CONNECTION.
+
+B)VOICE VLAN==IS A SPECIAL VLAN WHICH IS USED TO TRANSFER TAGGED VOICE DATA USING TRUNK LINK CONNECTION.
+
+TO CONFIGURE THIS WE NEED TO ENABLE ONE SERVICE KNOWN AS "IP TELEPHONY" IN CISCO ROUTER.
+
+WE HAVE TO PROVIDE DIRECTORY NUMBER TO EACH EPHONE(ETHERNET PHONE)
+
+
+***********************************************************
+DHCP option 150 provides a list of TFTP server IP addresses to DHCP clients. VoIP phones use this option to get the address of a VoIP configuration server, usually from a TFTP server.
+***********************************************************

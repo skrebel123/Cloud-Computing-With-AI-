@@ -1,0 +1,329 @@
+ACL(ACCESS CONTROL LIST)
+========================
+
+1.ITS A LIST USED TO CONTROL THE TRAFFIC (INBOUND/OUTBOUND) DEPENDING UPON THE POLICY SET ON IT.
+2.CAN BE IDENTIFIED BY NUMBER OR NAME
+3.CAN BE OF TWO TYPE
+	A)NUMBERED  ACL
+		i)STANDARD NUMBERED ACL
+		ii)EXTENDED NUMBERED ACL
+	B)NAMED ACL
+		i)STANDARD NAMED  ACL
+		ii)EXTENDED NAMED ACL*********
+
+
+NUMBERED  ACL			NAMED ACL
+=========================================================
+
+1.IDENTIFIED BY NUMBER		IDENTIFIED BY NAME
+
+2.ONCE CONFIGURED IT'S NOT      IT CAN BE EDITED AFTER CONFIGURED ALSO
+EDITABLE or can not be modi
+fied.		
+
+
+STANDARD ACL			EXTENDED ACL
+================================================
+1.IF IT IS STD NUMBERED		IF IT IS NUMBERED 
+1-99 & 1300-1999		100-199 & 2000-2699
+
+
+2.PLACED NEARER TO		PLACED NEARER TO SOURCE
+ DESTINATION
+
+3.FILTRATION CAN ONLY BE 	BOTH SOURCE & DESTINATION ADDRESS ARE 	DONE THROUGH SOURCE ADD 		FOR FILTRATION USED.
+
+4.NO SERVICE & PROTOCOL BASED   SERVICE & PROTOCOL BASED FILTRATION DONE.
+FILTRATION
+
+
+5.Filtered Information   Standard IP ACL   Extended IP ACL
+Source address 			Yes 		Yes
+Destination address 		No 		Yes
+IP protocol (i.e., TCP or UDP) 	No 		Yes
+Protocol information	        No 		Yes
+(i.e., port number) 
+
+
+
+BASIC RULES FOR CONFIGUTING ACL
+==================================
+
+1. ALL THE DENY STATEMENTS ARE CONFIGURED FIRST
+2.EVERY ACL SHOULD HAVE ATLEAST ONE  PERMIT STATEMENT OTHERWISE EVERYTHING WILL BE BLOCKED AND IT IS KNOWN AS ""IMPLICIT DENY STATEMENT""
+3.EVERY ACL IS PROCESSSED FROM TOP TO DOWN
+4.ALL THE PERMIT STATEMENTS SHOULD WRITE IN THE LAST
+5.AFTER CONFIGURING YOU HAVE TO ACTIVATE THE ACL ON ROUTER INTERFACE WITH IN/OUT DIRECTION.
+6.ALL ACL HAVE DENY/PERMIT STATEMENT
+
+7.When activating an ACL on an
+interface, you must specify in which direction the traffic should be filtered:
+
+■ Inbound (as the traffic comes into an interface from an external source)
+■ Outbound (before the traffic exits an interface to the network)
+
+
+■ in As traffic comes into the interface
+■ out As traffic leaves the interface
+===========================================================================================
+Operator 	Explanation
+===============================
+lt 		Less than
+gt 		Greater than
+neq 		Not equal to
+eq 		Equal to
+range 		Range of port numbers
+=============================================================================================
+Port Name 		Command Parameter 		Port Number
+FTP Data 		 ftp-data 			  20
+FTP Control 		 ftp 				  21
+Telnet 			 telnet 			  23
+SMTP 			 smtp 				  25
+WWW 			 www 				  80
+POP3 			 pop3 				  110
+===============================================================================================
+Port Name	 Command Parameter 	Port Number
+DNS Query 		dns 		  53
+TFTP 			tftp 		  69
+SNMP 			snmp 		  161
+IP RIP 			rip 		  520(UDP)
+
+===============================================================================================
+Common ICMP Messages
+========================
+
+
+Message Type	 			Message Description
+===============================================================
+administratively prohibited=======>Message that says that someone filtered a packet
+echo=======>=======>=======>=======> Used by ping to check a destination
+echo-reply=======>=======>=======>=======> Is a response to an echo message created by ping
+host-unreachable=======>=======>=======>The subnet is reachable, but the host is not responding
+net-unreachable=======>=======>=======>The network/subnet is not reachable
+traceroute =======>=======>=======>====>Filters on traceroute information when ICMP is used
+
+================================================================================================================================================================================================
+sm 255.255.255.0 for any single ip or for full nw???
+
+ans full nw
+
+
+wcm==(255.255.255.255)-(255.255.255.0)===>0.0.0.255 it is for single pc or full nw?
+
+ans is for full nw.
+
+if we want to use only 1 single pc in a full nw then we have to use 
+
+a)255.255.255.255 as its sm
+	or
+b)0.0.0.0 as its wcm
+
+
+
+
+LAB
+========
+
+1. BASIC IP SETTING & DCE SETTINGS AS PER OUR DIAGRAM
+
+2.ENABLE MODE PASSWORD & TELNET CONFIGURED ON R3 AS PER OUR DIAGRAM & ANY ROUTING PROTOCOL CONFIGURATION
+
+3.STANDARED ACL CONFIGURATION IN R2(MIDDLE ROUTER)
+
+Router(config)#access-list 1 deny 192.168.90.2 0.0.0.0
+Router(config)#access-list 1 permit any 
+Router(config)#Router(config)#INT SERial 0/2/0
+Router(config-if)#ip access-group 1 ?
+  in   inbound packets
+  out  outbound packets
+Router(config-if)#ip access-group 1 out
+
+=============================================================================================
+HOW TO VIEW ACCESS LIST
+
+Router#sh ip access-lists 
+Standard IP access list 1
+    10 deny host 192.168.90.2*******************
+    20 permit any
+================================================================================================
+C:\>PING 192.168.110.2
+
+Pinging 192.168.110.2 with 32 bytes of data:
+
+Reply from 10.1.1.2: Destination host unreachable.
+Reply from 10.1.1.2: Destination host unreachable.
+Reply from 10.1.1.2: Destination host unreachable.
+Reply from 10.1.1.2: Destination host unreachable.
+
+Ping statistics for 192.168.110.2:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+=======================================================================================
+R2#sh access-lists 
+Standard IP access list 1
+    10 deny 192.168.90.0 0.0.0.255*********************
+    20 permit any
+
+==============================================================================================
+EXTENDED NUMBERED ACL CONFIGURATION
+======================================
+
+Router(config)#access-list 100 deny tcp 192.168.90.2 0.0.0.0 host 20.1.1.2 eq telnet
+Router(config)#access-list 100 permit ip any any
+
+Router(config)#int serial 0/2/0
+Router(config-if)#ip access-group 100 out
+====================================================================================
+Router#SH IP ACCess-lists 
+Extended IP access list 100
+    10 deny tcp host 192.168.90.2 host 20.1.1.2 eq telnet
+    20 permit ip any any
+================================================================================================
+TESTING
+===========
+Router#SH IP ACCess-lists 
+Extended IP access list 100
+    10 deny tcp host 192.168.90.2 host 20.1.1.2 eq telnet
+    20 permit ip any any
+===============================================================================================
+TESTING OF MODIFICATION IN NUMBERED ACL
+
+Router(config)#NO access-list 100 permit ip any any
+Router(config)#access-list 100 deny tcp 192.168.90.3 0.0.0.0 host 20.1.1.2 eq telnet
+Router(config)#access-list 100 permit ip any any
+Router(config)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#
+Router#sh ip acc
+Router#sh ip access-lists 
+Extended IP access list 100
+    10 deny tcp host 192.168.90.3 host 20.1.1.2 eq telnet
+    20 permit ip any any
+
+============================================================================================
+CONFIGURING NAMED ACL
+======================
+Router(config)#ip access-list extended chagol
+Router(config-ext-nacl)#deny tcp 192.168.90.2 0.0.0.0 host 20.1.1.2 eq telnet
+Router(config-ext-nacl)#permit ip any any
+Router(config-ext-nacl)#exit
+
+Router(config)#int serial 0/2/0
+Router(config-if)#ip access-group chagol in
+==========================================================================================
+TESTING
+===========
+from pc1(192.168.90.2***********)===acl applied
+
+C:\>ping 20.1.1.2
+
+Pinging 20.1.1.2 with 32 bytes of data:
+
+Reply from 20.1.1.2: bytes=32 time=27ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=16ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=26ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=34ms TTL=253
+
+Ping statistics for 20.1.1.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 16ms, Maximum = 34ms, Average = 25ms
+
+C:\>telnet 20.1.1.2
+Trying 20.1.1.2 ...
+========================================================================
+pc2(192.168.90.3)acl not applied
+================================
+C:\>PING 20.1.1.2
+
+Pinging 20.1.1.2 with 32 bytes of data:
+
+Reply from 20.1.1.2: bytes=32 time=2ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=28ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=30ms TTL=253
+Reply from 20.1.1.2: bytes=32 time=70ms TTL=253
+
+Ping statistics for 20.1.1.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 2ms, Maximum = 70ms, Average = 32ms
+
+C:\>TELNET 20.1.1.2
+Trying 20.1.1.2 ...Open
+
+
+User Access Verification
+
+Password: 
+Router>en
+Password: 
+Router#
+==================================================================================
+HOW TO VIEW
+==================
+
+Router#sh ip access-lists 
+Extended IP access list chagol
+    10 deny tcp host 192.168.90.2 host 20.1.1.2 eq telnet (33 match(es))
+    20 permit ip any any (47 match(es))
+================================================================================================
+TESTING OF MODIFICATION OF NAMED ACL
+======================================
+
+Router(config)#ip access-list extended chagol
+Router(config-ext-nacl)#no permit ip any any
+Router(config-ext-nacl)#deny tcp 192.168.90.3 0.0.0.0 host 20.1.1.2 eq telnet
+Router(config-ext-nacl)#permit ip any any
+Router(config-ext-nacl)#exit
+
+Router#sh ip access-lists 
+Extended IP access list chagol
+    10 deny tcp host 192.168.90.2 host 20.1.1.2 eq telnet (33 match(es))
+    20 deny tcp host 192.168.90.3 host 20.1.1.2 eq telnet
+    30 permit ip any any
+==========================================================================
+ACL SEQUENCE NUMBER
+====================
+""By default, the sequence numbers start at 10 and increment by 10"". 
+You know that your IOS device supports sequenced ACLs if you display them with the show access-lists command and you see sequence numbers in front of the ACL
+statements:
+
+Router# show access-list
+
+Extended IP access list 101
+10 permit ip host 192.168.101.69 any
+20 permit ip host 192.168.101.89 any
+
+
+**
+Sequenced ACLs work with both named and numbered ACLs; however, to edit a
+numbered ACL, you must treat it as though it were a named ACL. Once you enter the ACL subcommand mode, you can delete an entry by prefacing the sequence number with the no command:
+
+Router(config)# ip access-list {standard|extended} ACL_name_or_#
+Router(config-{std|ext}-nacl)# no sequence_#
+
+***
+""To insert a statement in an ACL"", enter the ACL subcommand mode and
+preference the ACL statement with a sequence number that does not currently exist in the list of statements, like this:
+
+Router(config)# ip access-list {standard|extended} ACL_name_or_#
+Router(config-{std|ext}-nacl)# sequence_# {permit|deny} ACL_condition
+
+Router(config)#ip access-list extended chagol
+Router(config-ext-nacl)#sequence 14 deny tcp 192.168.90.45 0.0.0.0 host 20.1.1.2 eq telnet
+
+FOR RESEQUENCING
+=================
+Router (config)# ip access-list resequence 101 5 20
+Extended IP access list 101
+5 permit ip host 192.168.101.69 any
+25 permit ip host 192.168.101.89 any
+45
+65
+85
+
+101==ACL NO
+5==STARTING SEQUENCE NUMBER
+20==INCREMENT VALUE.
+======================================================================================================THE END=======================================

@@ -1,0 +1,153 @@
+SSH CONFIGURATION(SECURE SHELL)
+================================
+1.PORT NO=22,IT'S AN APPLICATION LAYER PROTOCOL)
+2.USE RSA ALGORITHM (RIVEST SHAMIR ADLEMAN)
+3.USERNAME AND PASSWORD ARE ENCRYPTED
+4.FOR WINDOWS PC PUTTY IS REQURIED TO CONNECT A DEVICE REMOTELY THROUGH SSH
+5.FOR LINUX PC SSH IS THE INBUILT FEATURES.
+6.USED TO CONNECT REMOTE DEVICE (PC/LAPTOP/SERVER/ROUTER/L2 SWITCH/L3 SWITCH/FIREWALL) SECURELY
+
+
+
+Telnet sends traffic in clear text, making it susceptible to an eavesdropping attack. To secure remote access to your IOS device and prevent eavesdropping on the commands you’re entering and the configurations you’re viewing, use SSH as your remote access terminal connection: SSH encrypts traffic. To prevent an access attack against your IOS device, you should combine SSH with filtering of management access to your device by using access control lists (which indicate what IP addresses can manage it).
+
+
+SSH Configuration Prerequisite
+=================================
+To set up SSH on your IOS device so you can use an SSH client to access it, you’ll
+need to configure the following:
+■ A local username and password SSH requires both (username command)
+■ A hostname and a domain name This is required to label the RSA key pair
+on the IOS device (hostname and ip domain-name commands)
+■ The SSH version to use The default is version 1, but the recommended
+version to use is 2 (ip ssh version command)
+■ RSA public and private keys These are used to encrypt and decrypt the
+remote access connection (crypto key generate rsa command)
+■ Restricting VTY access By default, telnet is allowed on the VTYs—you
+should ensure that only SSH access is allowed (login local and
+transport input Line Subconfiguration commands)
+
+SSH SERVER CONFIGURATION(IN OUR LAB IT IS ROUTER)
+====================================================
+1.BASIC IP SETTINGS
+
+Router>enable
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface Serial0/3/0
+Router(config-if)#no shutdown
+Router(config-if)#clock rate 72000
+Router(config-if)#BANDwidth 72
+Router(config-if)#ip address 10.1.1.1 255.0.0.0
+Router(config-if)#EXIT
+
+2.SSH CONFIGURATION
+
+Router(config)#hostname India
+India(config)#enable secret ccna
+India(config)#username partho password ccna
+
+India(config)#ip domain-name wb.com
+
+India(config)#crypto key generate rsa
+
+The name for the keys will be: India.wb.com
+Choose the size of the key modulus in the range of 360 to 2048 for your
+  General Purpose Keys. Choosing a key modulus greater than 512 may take
+  a few minutes.
+
+How many bits in the modulus [512]: 2048******
+
+% Generating 2048 bit RSA keys, keys will be non-exportable...[OK]
+
+
+India(config)#ip ssh version 2
+
+India(config)#ip ssh authentication-retries ?
+  <0-5>  Number of authentication retries
+India(config)#ip ssh authentication-retries 3
+
+India(config)#ip ssh time-out ?
+  <1-120>  SSH time-out interval (secs)
+India(config)#ip ssh time-out 60
+India(config)#line vty 0 4(vty==virtual teletype/virtual terminal)
+India(config-line)#transport input ssh 
+India(config-line)#login local
+India(config-line)#exit
+===================================================================================
+HOW TO VERIFY SSH
+
+India#sh ip ssh 
+
+SSH Enabled - version 2.0
+Authentication timeout: 60 secs; Authentication retries: 3
+
+====================================================================================
+SSH CLIENT CONFIGURATION
+==========================
+
+1.WINDOWS PC+PUTTY SOFT
+OR
+2.LINUX PC WITH INBUILT SSH
+OR
+3.WE ARE USING ROUTER AS A SSH CLIENT
+4.Packet Tracer 8.0==>pc==>desktop==>Telnet/SSH option==>
+Set==>SSH
+IP==192.168.90.1(SSH Server IP=here it is Router)
+Username
+
+==>Connect
+
+
+ssh client configuration (here r2 is a ssh client)
+=====================================================
+Router>enable
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface Serial0/3/0
+Router(config-if)#no shutdown
+Router(config-if)#ip address 10.1.1.2 255.0.0.0
+
+------------------------------------------------------------------------------
+Router#SSH ?
+
+  -l  Log in using this user name   [here l= Partho]
+
+  -v  Specify SSH Protocol Version  [v= Version 2]
+
+Router#ssh -l partho -v 2 10.1.1.1
+
+Password: 
+
+India>en
+
+Password: 
+
+India#
+
+India#sh ip int brief 
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        unassigned      YES unset  administratively down down 
+FastEthernet0/1        unassigned      YES unset  administratively down down 
+Serial0/3/0            10.1.1.1        YES manual up                    up 
+Vlan1                  unassigned      YES unset  administratively down down
+
+================================================================================-=========
+HOW TO REMOVE RSA KEY PAIR
+=============================
+
+IF WE REMOVE RSA KEY PAIR THEN SSH WILL AUTOMATICALLY DISABLED.
+
+India(config)#crypto key zeroize rsa
+% All RSA keys will be removed.
+% All router certs issued using these keys will also be removed.
+Do you really want to remove these keys? [yes/no]: yes
+
+====================================================================================
+HOW TO VERIFY THAT RSA KEY PAIR IS DISABLED
+===========================================
+India#sh ip ssh
+SSH Disabled - version 2****************************
+%Please create RSA keys (of atleast 768 bits size) to enable SSH v2.
+Authentication timeout: 60 secs; Authentication retries: 3
+

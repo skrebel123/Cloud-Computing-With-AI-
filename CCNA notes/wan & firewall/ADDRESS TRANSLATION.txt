@@ -1,0 +1,91 @@
+Address Translation
+=====================
+A second standard, RFC 1631, was created to solve this problem. It defines a processcalled Network Address Translation (NAT), which allows you to change an IP address in a packet to a different address. When communicating to devices in a public
+network, your device needs to use a source address that is a public address. Address translation allows you to translate your internal private addresses to public addresses before these packets leave your network.
+
+
+Here are some common reasons that you might need to employ address translation:
+
+■ You have to use private addressing because your ISP didn’t assign you enough public IPv4 addresses.
+
+■ You are using public addresses but have changed ISPs, and your new ISP
+won’t support these public addresses.
+
+■ You are merging two companies and they are using the same address space—for instance, 10.0.0.0—which creates routing and reachability issues.
+
+■ You want to assign the same IP address to multiple machines so that users on the Internet see this offered service as a single
+logical computer.
+
+
+Term Definition
+
+Inside 		Addresses located on the inside of your network
+Outside 	Addresses located outside of your network
+Local 		The IP address physically assigned to a device
+Global 		The public IP address physically or logically assigned to 		a device
+Inside 		local IP address An inside device with an assigned private 		IP address
+Inside 		global IP address An inside device with a registered 		public IP address
+Outside 	global IP address An outside device with a registered 		public IP address
+Outside 	local IP address An outside device with an assigned 		private IP address
+
+
+Static NAT
+With static NAT, a manual translation is performed by an address translation
+device, translating one IP address to a different one. Typically, static NAT is used to
+translate destination IP addresses in packets as they come into your network, but you
+can translate source addresses also.
+
+
+Dynamic NAT
+With static address translation, you need to build the translations manually. If you
+have 1000 devices, you need to create 1000 static entries in the address translation
+table, which is a lot of work. Typically, static translation is done for inside resources
+that outside people want to access. When inside users access outside resources,
+dynamic translation is typically used. In this situation, the global address assigned to
+the internal user isn’t that important, since outside devices don’t directly connect to
+your internal users—they just return traffic to them that the inside user requested.
+With dynamic NAT, you must manually define two sets of addresses on your
+address translation device. One set defines which inside addresses are allowed to
+be translated (the local addresses), and the other defines what these addresses
+are to be translated to (the global addresses). When an inside user sends traffic
+through the address translation device, say a router, it examines the source IP
+address and compares it to the internal local address pool. If it finds a match, then it
+determines which inside global address pool it should use for the translation. It then
+dynamically picks an address in the global address pool that is not currently assigned
+to an inside device. The router adds this entry in its address translation table, the
+packet is translated, and the packet is then sent to the outside world. If no matching
+entry is found in the local address pool, the address is not translated and is forwarded
+to the outside world in its original state.
+
+Port Address Translation
+One problem with static or dynamic NAT is that it provides only a one-to-one
+address translation. Therefore, if you have 5000 internal devices with private
+addresses, and all 5000 devices try to reach the Internet simultaneously, you need
+5000 public addresses in your inside global address pool. If you have only 1000
+public addresses, only the first 1000 devices are translated and the remaining 4000
+won’t be able to reach outside destinations. To overcome this problem, you can use a
+process called address overloading. Many other terms are used to describe this process,
+including port address translation (PAT) and network address port translation
+(NAPT).
+
+Advantages of Address Translation*************
+As mentioned at the beginning of this part of the chapter, address translation
+devices are typically used to give you an almost inexhaustible number of addresses
+as well as to hide your internal network addressing scheme. Another advantage of
+address translation is that if you change ISPs or merge with another company, you
+can keep your current addressing scheme and make any necessary changes on your
+address translation device or devices, making your address management easier.
+Another big advantage that address translation provides is that it gives you
+tighter control over traffic entering and leaving your network. For example, if you
+are using private addresses internally, all traffic entering and leaving must pass
+through an address translation device. Because of this restriction, it is much easier to
+implement your security and business policies
+
+Disadvantages of Address Translation************
+Even though address translation solves many problems and has many advantages,
+it also has its share of disadvantages. Here are the three main issues with address
+translation:
+■ Each connection has an added delay.
+■ Troubleshooting is more difficult.
+■ Not all applications work with address translation.
+

@@ -1,0 +1,193 @@
+OSPF VIRTUAL LINK
+==================
+r1
+=====
+Router(config)#router ospf  1
+Router(config-router)#net
+Router(config-router)#network 11.0.0.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.1.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.2.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.3.0 0.0.0.255 area 10
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 20
+==================================================================
+r2
+====
+Router(config)#router ospf 1
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+00:12:29: %OSPF-5-ADJCHG: Process 1, Nbr 11.0.3.1 on Serial0/2/0 from LOADING to FULL, Loading Done
+
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 20
+Router(config-router)#
+=====================================================================
+r3
+===
+Router(config)#router osp 1
+Router(config-router)#net
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 0
+Router(config-router)#no network 2.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 20
+Router(config-router)#
+00:14:34: %OSPF-5-ADJCHG: Process 1, Nbr 20.1.1.1 on Serial0/2/0 from LOADING to FULL, Loading Done
+
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 0
+
+====================================================================
+r4
+==
+Router(config)#router ospf 1
+Router(config-router)#net
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 40.0.0.0 0.255.255.255 area 0
+Router(config-router)#
+Router(config-router)#
+00:15:37: %OSPF-5-ADJCHG: Process 1, Nbr 30.1.1.1 on Serial0/3/0 from LOADING to FULL, Loading Done
+
+Router(config-router)#
+Router(config-router)#net
+Router(config-router)#network 14.0.0.0 0.0.0.255 area 0 
+Router(config-router)#network 14.0.1.0 0.0.0.255 area 0 
+Router(config-router)#network 14.0.2.0 0.0.0.255 area 0 
+Router(config-router)#network 14.0.3.0 0.0.0.255 area 0 
+===============================================================
+r4
+==
+Router#sh ip route 
+
+O IA 1.0.0.0/8 [110/192] via 3.3.3.1, 00:00:44, Serial0/3/0
+O IA 2.0.0.0/8 [110/128] via 3.3.3.1, 00:00:44, Serial0/3/0
+C    3.0.0.0/8 is directly connected, Serial0/3/0
+     14.0.0.0/24 is subnetted, 4 subnets
+C       14.0.0.0 is directly connected, Loopback0
+C       14.0.1.0 is directly connected, Loopback1
+C       14.0.2.0 is directly connected, Loopback2
+C       14.0.3.0 is directly connected, Loopback3
+
+r1
+===
+Router#sh ip route 
+
+C    1.0.0.0/8 is directly connected, Serial0/3/0
+O    2.0.0.0/8 [110/3124] via 1.1.1.2, 00:05:37, Serial0/3/0
+O IA 3.0.0.0/8 [110/4686] via 1.1.1.2, 00:03:26, Serial0/3/0
+     11.0.0.0/24 is subnetted, 4 subnets
+C       11.0.0.0 is directly connected, Loopback0
+C       11.0.1.0 is directly connected, Loopback1
+C       11.0.2.0 is directly connected, Loopback2
+C       11.0.3.0 is directly connected, Loopback3
+     14.0.0.0/32 is subnetted, 4 subnets
+O IA    14.0.0.1 [110/4687] via 1.1.1.2, 00:01:44, Serial0/3/0
+O IA    14.0.1.1 [110/4687] via 1.1.1.2, 00:01:44, Serial0/3/0
+O IA    14.0.2.1 [110/4687] via 1.1.1.2, 00:01:44, Serial0/3/0
+O IA    14.0.3.1 [110/4687] via 1.1.1.2, 00:01:44, Serial0/3/0
+
+
+
+
+===============================================================
+r1(abr)
+====
+Router(config)#router ospf 1
+Router(config-router)#rou
+Router(config-router)#router-id 90.1.1.1
+Router(config-router)#Reload or use "clear ip ospf process" command, for this to take effect
+
+
+Router(config-router)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#clear ip osp
+Router#clear ip ospf pro
+Router#clear ip ospf process 
+Reset ALL OSPF processes? [no]: yes
+
+==================================
+r3(abr)
+=======
+Router(config)#router ospf 1
+Router(config-router)#router-id 90.1.1.2
+Router(config-router)#Reload or use "clear ip ospf process" command, for this to take effect
+
+
+Router(config-router)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#
+Router#
+Router#clear ip osp
+Router#clear ip ospf pro
+Router#clear ip ospf process 
+Reset ALL OSPF processes? [no]: yes
+================================================================
+r1(abr)
+=======
+Router(config)#router ospf 1
+Router(config-router)#area 20 virtual-link 90.1.1.2
+
+
+r3(abr)
+========
+Router(config)#router ospf  1
+Router(config-router)#area 20 virtual-link 90.1.1.1
+Router(config-router)#
+=========================================================================
+r1
+===
+Router#sh ip route 
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+C    1.0.0.0/8 is directly connected, Serial0/3/0
+O    2.0.0.0/8 [110/3124] via 1.1.1.2, 00:12:05, Serial0/3/0
+O    3.0.0.0/8 [110/4686] via 1.1.1.2, 00:06:06, Serial0/3/0
+     11.0.0.0/24 is subnetted, 4 subnets
+C       11.0.0.0 is directly connected, Loopback0
+C       11.0.1.0 is directly connected, Loopback1
+C       11.0.2.0 is directly connected, Loopback2
+C       11.0.3.0 is directly connected, Loopback3
+     14.0.0.0/32 is subnetted, 4 subnets
+O       14.0.0.1 [110/4687] via 1.1.1.2, 00:06:06, Serial0/3/0
+O       14.0.1.1 [110/4687] via 1.1.1.2, 00:06:06, Serial0/3/0
+O       14.0.2.1 [110/4687] via 1.1.1.2, 00:06:06, Serial0/3/0
+O       14.0.3.1 [110/4687] via 1.1.1.2, 00:06:06, Serial0/3/0
+==================================================================
+r4
+===
+Router#sh ip route 
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+O IA 1.0.0.0/8 [110/192] via 3.3.3.1, 00:13:29, Serial0/3/0
+O IA 2.0.0.0/8 [110/128] via 3.3.3.1, 00:13:29, Serial0/3/0
+C    3.0.0.0/8 is directly connected, Serial0/3/0
+     11.0.0.0/32 is subnetted, 4 subnets
+O IA    11.0.0.1 [110/193] via 3.3.3.1, 00:07:00, Serial0/3/0
+O IA    11.0.1.1 [110/193] via 3.3.3.1, 00:07:00, Serial0/3/0
+O IA    11.0.2.1 [110/193] via 3.3.3.1, 00:07:00, Serial0/3/0
+O IA    11.0.3.1 [110/193] via 3.3.3.1, 00:07:00, Serial0/3/0
+     14.0.0.0/24 is subnetted, 4 subnets
+C       14.0.0.0 is directly connected, Loopback0
+C       14.0.1.0 is directly connected, Loopback1
+C       14.0.2.0 is directly connected, Loopback2
+C       14.0.3.0 is directly connected, Loopback3
+========================================================

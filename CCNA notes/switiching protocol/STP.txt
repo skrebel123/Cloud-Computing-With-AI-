@@ -1,0 +1,263 @@
+Spanning Tree Protocol
+======================
+The main function of the Spanning Tree Protocol (STP) is to remove layer 2 loops from your topology, logically speaking. DEC, now a part of HP, originally developed STP. IEEE enhanced the initial implementation of STP, giving us the 802.1d standard. The two different implementations of STP, DEC and 802.1d, are not compatible with each other—you need to make sure that all of your devices support either one or the other. All of Cisco’s switches use IEEE’s 802.1d protocol, which is enabled, by default, on their switches. If you have a mixed-vendor environment where some devices are running 802.1d and others are running DEC’s STP, you
+might run into layer 2 looping problems.
+
+Bridge Protocol Data Units
+==========================
+For STP to function, the switches need to share information about themselves and their connections. What they share are Bridge Protocol Data Units (BPDUs), which are sent out as multicast frames to which only other layer 2 switches or bridges are listening. Switches will use BPDUs to learn the topology of the network: what switch is connected to other switches, and whether any layer 2 loops are based on this topology.
+
+By default, BPDUs are sent out every 2 seconds. This helps speed up convergence.Convergence is a term used in networking to describe the amount of time it takes to deal with changes and get the network back up and running. The shorter the time period to find and fix problems, the quicker your network is back online. Setting the BPDU advertisement time to 2 seconds allows changes to be quickly shared with all the other switches in the network, reducing the amount of time any disruption
+would create.
+
+BPDUs contain a lot of information to help the switches determine the topology and any loops that result from that topology. For instance, each bridge has a unique identifier, called a bridge or switch ID. This is typically the priority of the switch and the MAC address of the switch itself. When switches advertise a BPDU, they place their switch ID in the BPDU so that a receiving switch can tell from which switch it is receiving topology information. The following sections cover the steps that occur while STP is being executed in a layer 2 network.
+
+Most bridges and switches
+use IEEE’s 802.1d protocol to remove loops. BPDUs are used to share information, and they are sent out as multicasts every two seconds. The BPDU contains the switch’s ID, made up of a priority value and
+the switch’s MAC address.
+
+
+1.Root Sw Election==Least Sw Id(Sw Priority+MAC Address)
+				  32768
+vlan 10 20 30 50
+
+
+32768+1=32769
+
+32768+10=32778
+32768+20=32788
+32768+30=32798
+32768+50=32818
+
+2.Root Port Election consideration
+==============
+a)Root sw does not have root port
+b)Except root sw all the switches should have only one root port
+
+Root Port Will be elected depending upon Port Cost & Path Cost
+
+
+Find out the port cost value for STP
+
+10Mbps=100
+100Mbps=19
+1Gbps=4
+10Gbps=2
+
+Path Cost=Accumulated Port Cost
+
+house=rickshaw=chow==18
+chow to tollygunge=18
+Tolly to RS=15
+
+
+Presee===>
+
+3.Designated Port election
+
+4.Alternate Designated Port(Blocked Port) Election
+
+STP verification Lab+STP Port State
+
+Root Switch
+The term Spanning Tree Protocol describes the process that is used to find and remove
+loops from a layer 2 network. The STP algorithm is similar to how link state routing
+protocols, such as Open Shortest Path First (OSPF), ensure that no layer 3 loops are
+created; of course, STP deals only with layer 2 loops (link state routing protocols are
+discussed in Chapters 15 and 20).
+A spanning tree is first created. Basically, a spanning tree is an inverted tree.
+At the top of the tree is the root, or what is referred to in STP as the root bridge
+or switch. From the root switch, branches (physical Ethernet connections) extend
+and connect to other switches, and branches from these switches connect to other
+switches, and so on.
+
+The switch with the lowest switch ID is chosen as root. The switch ID is made up of
+two components:
+■ The switch’s priority, which defaults to 32,768 on Cisco switches (2 bytes
+in length)
+■ The switch’s MAC address (6 bytes in length)
+With Cisco’s switches, the default priority is 32,768, which is defined by IEEE
+802.1d. Assuming that all your switches are Cisco switches and you don’t change the
+default priority, the switch with the lowest MAC address will be chosen as the root
+switch. You can override the election process by changing the priority value assigned
+to a switch. If you want one switch to be the root, assign it a priority value that is
+lower than 32,768. Through the sharing of the BPDUs, the switches will figure out
+which switch has the lowest switch ID, and that switch is chosen as the root switch.
+Note that this election process is taking place almost simultaneously on each switch,
+where each switch will come up with the same result. In other words, the switch that
+has the lowest switch ID is not advertising to other switches that it has the lowest ID
+value and thus everyone else should be a non-root switch.
+
+Root Port
+===============
+After the root switch is elected, every other switch in the network needs to choose
+a single port, on itself, that it will use to reach the root. This port is called the root
+port.
+
+Port Costs and Priorities
+============================
+First, each port is assigned a cost, called a port cost. The lower the cost, the more
+preferable the port. The cost is an inverse reflection of the bandwidth of the port.
+Two sets of costs exist for 802.1d’s implementation of STP—one for the old method
+of calculation and one for the new, as is shown in Table 14-1.
+
+Path Costs
+=============
+Path costs are calculated from the root switch. A path cost is basically the
+accumulated port costs from the root switch to other switches in the topology.
+When the root advertises BPDUs out its interfaces, the default path cost value in
+the BPDU frame is 0. When a connected switch receives this BPDU, it increments
+the path cost by the cost of its local incoming port. If the port was a Fast Ethernet
+port, then the path cost would be figured like
+this: 0 (the root’s path cost) + 19 (the switch’s
+port cost) = 19. This switch, when it advertises
+BPDUs to switches behind it, will include the
+updated path cost. As the BPDUs propagate
+further and further from the root switch, the
+accumulated path cost values become higher
+and higher.
+
+Root Port Selection
+=======================
+
+If a switch has two or more choices of paths to reach the root, it needs to choose one path and thus have one root port. A switch will go through the following STP steps
+
+when choosing a root port:
+
+1. Choose the path with the lowest accumulated path cost to the root when it has a choice between two or more paths to reach the root.
+
+2. If multiple paths to the root are available with the same accumulated path cost, the switch will choose the neighboring switch (that the switch would go through to reach the root) with the lowest switch ID value.
+
+3. If multiple paths all go through the same neighboring switch, it will choose the local port with the lowest priority value.
+
+4. If the priority values are the same between the ports, it will choose the physically lowest numbered port on the switch. For example, on a 2960, that would be FastEthernet 0/1 or Gigabit 0/1. After going through this selection process, the switch will have one, and only one, port that
+will become its root port.
+
+Designated Port
+================
+You now know that each switch has a single root port that it uses to reach the root switch. In addition to each switch having a root port, each segment also has a single port that is uses to reach the root, and this port is called a designated port. For example, imagine that a segment has two switches connected to it. Either one or the other switch will forward traffic from this segment to the rest of the network.
+
+The third step in running STP is to elect a designated port on a single switch for each segment in the network. The switch (and its port) that is chosen should have the best path to the root switch. Here are the steps taken by switches in determining which port on which switch will be chosen as the designated port for a particular LAN segment.
+
+1. The connected switch on the segment with the lowest accumulated path cost to the root switch will be used.
+2. If there is a tie in accumulated path costs between two switches, the switch with the lowest switch ID will be chosen.
+3. If it happens that it is the same switch, but with two separate connections to the LAN segment, the switch port with the lowest priority is chosen.
+4. If there is still a tie (the priorities of the ports on this switch are the same), the physically lowest numbered port on the switch is chosen.
+
+
+
+After going through these steps for each segment, each segment will have a single designated port on a connected switch that it will use to reach the root switch.
+
+Sometimes the switch that contains the designated port is called a designated switch.
+
+This term is misleading, though, since it is a port on the switch that is responsible for forwarding traffic. A switch may be connected
+to two segments, but it may be the designated switch for only one of those segments; another switch may provide the designated port for the
+second segment.
+
+Interestingly enough, every active port on the root switch is a designated port. This makes sense because the cost of the attached network segments to reach the root is 0, the lowest accumulated cost value. In other words, each of these LAN segments is directly attached to the root switch, so in reality, it costs nothing for the segment to reach the root switch itself.
+
+Port States
+============
+A port can be in one of five states when it is participating in STP:
+
+■ Blocking(20Sec)
+■ Listening(15Sec)
+■ Learning(15Sec)
+■ Forwarding(NO LIMIT)
+■ Disabled(NO LIMIT)
+
+Of the five states, only the first four are used when the algorithm is running. The
+following sections cover these port states for STP.
+
+Blocking
+Ports will go into a blocking state under one of three conditions:
+■ During election of a root switch (for instance, when you turn on all the
+switches in a network)
+■ When a switch receives a BPDU on a port that indicates a better path to the
+root switch than the port which the switch is currently using to reach the root
+■ If a port is not a root port or a designated port
+
+A port in a blocking state will remain there for 20 seconds by default (the maximum
+age timer). During this state, the port is listening to and processing only BPDUs on its
+interfaces. Any other frames that the switch receives on a blocked port are dropped.
+In a blocking state, the switch is attempting to figure out which port is going to be the
+root port, which ports on the switch need to be designated ports, and which ports will
+remain in a blocking state to break up any loops.
+Listening
+After the 20-second timer expires, a root port or a designated port will move to a
+listening state. Any other port will remain in a blocking state. During the listening
+state, the port is still listening for BPDUs and double-checking the layer 2 topology.
+Again, the only traffic that is being processed on a port in this state consists of
+BPDUs; all other traffic is dropped. A port will stay in this state for the length of the
+forward delay timer. The default for this value is 15 seconds.
+
+Learning
+From a listening state, a root and designated ports move into a learning state. During
+the learning state, the port is still listening for and processing BPDUs on the port;
+however, unlike while in the listening state, the port begins to process user frames.
+When processing user frames, the switch is examining the source addresses in
+the frames and updating its MAC or port address table, but the switch is still not
+forwarding these frames out destination ports. Ports stay in this state for the length
+of the forward delay time (which defaults to 15 seconds).
+
+
+Forwarding
+Finally, after the forward delay timer expires, ports that were in a learning state
+are placed in a forwarding state. In a forwarding state, the port will process BPDUs,
+update its MAC address table with frames that it receives, and forward user traffic
+through the port.
+Disabled
+The disabled state is a special port state. A port in a disabled state is not participating in
+STP. This could be because the port has been manually shut down by an administrator,
+manually removed from STP, disabled because of security issues, or rendered
+nonfunctional because of a lack of a physical layer signal (such as the patch cable
+being unplugged).
+
+
+
+Four major port states are
+used in STP: blocking (20 seconds), listening
+(15 seconds), learning (15 seconds), and
+forwarding. It can take 30 to 50 seconds for
+STP convergence to take place. STP must
+recalculate if a new root is discovered or
+a topology change occurs in the network
+(a new switch added or a change in the
+state of a port on a switch). In blocking and
+listening states, only BPDUs are processed.
+In a learning state, the MAC address table
+is being built. In a forwarding state, user
+frames are moved between ports. STP
+leaves ports in a blocking state to remove
+loops.
+
+================================================================================================================================================================================================
+
+
+HOW STP WORKS
+
+1.ROOT SWITCH ELECTION===BASED ON LEAST SWITCH ID(SWITCH PRIORITY(32768)+SWITCH MAC ADD)
+
+2.ROOT PORT ELECTION IN ALL SWITCHES EXCEPT ROOT SWITCH(1 ROOT PORT PER SWITCH)
+
+3.LEAST PORT COST OR LEAST PATH COST(ACCUMULATED PORT COST)IS USED TO FIND OUT ROOT PORT
+
+4.NOW WE HAVE TO FIND OUT DESIGNATED PORT "SEGMENTWISE"(UP/DOWN+LEFT/RIGHT)
+
+5.LEAST PORT COST OR LEAST PATH COST IS USED TO FIND OUT DESIGNATED PORT SEGMENTWISE
+
+6.ALL REMAINING PORTS ARE CONSIDERED AS BLOCKED PORT OR NON DESIGNATED PORT OR ALTERNATE DESIGNATED PORT OTHER THAN ROOT SWITCH.
+
+
+
+NOTE:==
+
+ROOT SWITCH HAVE
+
+
+1.LEAST SWITCH ID
+2.NO ROOT PORT
+3.NO BLOCKED PORT
+4.ALL DP.
+
+===========================================================================================

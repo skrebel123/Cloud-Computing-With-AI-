@@ -1,0 +1,66 @@
+Virtual Private Networks
+===========================
+I’d be pretty willing to bet you’ve heard the term VPN more than once before. Maybe you even know what one is, but just in case, a virtual private network (VPN) allows the creation of private
+networks across the Internet, enabling privacy and tunneling of IP and non-TCP/IP protocols.
+VPNs are used daily to give remote users and disjointed networks connectivity over a public
+medium like the Internet instead of using more expensive permanent means.
+
+Benefits of VPNs
+=================
+There are many benefits to using VPNs on your corporate and even home network. The benefits covered in the CCNA R/S objectives are as follows:
+
+Security VPNs can provide very good security by using advanced encryption and authentication protocols, which will help protect your network from unauthorized access. IPsec and SSL fall into this category. Secure Sockets Layer (SSL) is an encryption technology used with web browsers, which has native SSL encryption, and is known as Web VPN. 
+
+You can also use the Cisco AnyConnect SSL VPN client installed on your PC to provide an SSL VPN solution, as well as the Clientless Cisco SSL VPN.
+
+Cost savings By connecting the corporate remote offices to their closest Internet provider, and then creating a VPN tunnel with encryption and authentication, I gain a huge savings over opting for traditional leased point-to-point lines. This also permits higher bandwidth links and security, all for far less money than traditional connections.
+
+
+Scalability VPNs scale very well to quickly bring up new offices or have mobile users connect securely while traveling or when connecting from home.
+Compatibility with broadband technology For remote and traveling users and remote
+offices, any Internet access can provide a connection to the corporate VPN. This allows users to take advantage of the high-speed Internet access of DSL or cable modems.
+
+VPN TYPES
+==============
+There are three different categories of enterprise-managed VPNs:
+
+1.Remote-access VPNs allow remote users such as telecommuters to securely access the
+corporate network wherever and whenever they need to.
+
+2.Site-to-site VPNs, or intranet VPNs, allow a company to connect its remote sites to the
+corporate backbone securely over a public medium like the Internet instead of requiring
+more expensive WAN connections like Frame Relay.
+
+3.Extranet VPNs allow an organization’s suppliers, partners, and customers to be connected to the corporate network in a limited way for business-to-business (B2B) communications.
+
+TUNNELLING PROTOCOL
+======================
+1.Layer 2 Forwarding (L2F) is a Cisco-proprietary tunneling protocol, and it was Cisco’s first tunneling protocol created for virtual private dial-up networks (VPDNs). A VPDN allows a device to use a dial-up connection to create a secure connection to a corporate network. L2F was later replaced by L2TP, which is backward compatible with L2F.
+
+
+2.Point-to-Point Tunneling Protocol (PPTP) was created by Microsoft and others to allow the secure transfer of data from remote networks to the corporate network.
+
+
+3.Layer 2 Tunneling Protocol (L2TP) was created by Cisco and Microsoft to replace L2F and PPTP. L2TP merged the capabilities of both L2F and PPTP into one tunneling protocol.
+
+4.Generic Routing Encapsulation (GRE) is another Cisco-proprietary tunneling protocol. It forms virtual point-to-point links, allowing for a variety of protocols to be encapsulated in IP tunnels.
+
+=====================================================
+GRE Tunnels
+================
+Generic Routing Encapsulation (GRE) is a tunneling protocol that can encapsulate many protocols inside IP tunnels. Some examples would be routing protocols such as EIGRP and OSPF and the routed protocol IPv6. Figure 21.23 shows the different pieces of a GRE header.
+
+A GRE tunnel interface supports a header for each of the following:
+A passenger protocol or encapsulated protocols like IP or IPv6, which is the protocol being encapsulated by GRE .
+
+GRE encapsulation protocol
+
+A transport delivery protocol, typically IP GRE tunnels have the following characteristics:
+
+GRE uses a protocol-type field in the GRE header so any layer 3 protocol can be used through the tunnel.
+
+GRE is stateless and has no flow control.
+
+GRE offers no security.
+
+GRE creates additional overhead for tunneled packets—at least 24 bytes.

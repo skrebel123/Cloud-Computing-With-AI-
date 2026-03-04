@@ -1,0 +1,160 @@
+Router>en
+Router#conf t
+Router(config)#int fa 0/0
+Router(config-if)#no ip address 
+Router(config-if)#no sh
+Router(config-if)#int fa 0/0.10
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.10.1 255.255.255.0
+Router(config-subif)#int fa 0/0.20
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.20.1 255.255.255.0
+Router(config-subif)#exit
+Router(config)#ip dhcp pool data
+Router(dhcp-config)#default-router 192.168.10.1
+Router(dhcp-config)#network 192.168.10.0 255.255.255.0
+Router(dhcp-config)#exit
+Router(config)#ip dhcp excluded-address 192.168.10.1
+Router(config)#ip dhcp excluded-address 192.168.10.2
+Router(config)#ip dhcp excluded-address 192.168.10.3
+Router(config)#ip dhcp pool voice
+Router(dhcp-config)#default-router 192.168.20.1
+Router(dhcp-config)#network 192.168.20.0 255.255.255.0
+Router(dhcp-config)#exit
+Router(config)#ip dhcp excluded-address 192.168.20.1 192.168.20.9
+
+****************************************************************************
+Router(config)#ip dhcp pool voice
+Router(dhcp-config)#option 150 ip 192.168.20.1
+Router(dhcp-config)#exit
+
+DHCP option 150 provides the IP addresses of a list of TFTP servers.
+*****************************************************************************
+
+
+================================================================================
+Switch(config)#vlan 10
+Switch(config-vlan)#name data
+Switch(config-vlan)#exit
+Switch(config)#vlan 20
+Switch(config-vlan)#name voice
+Switch(config-vlan)#exit
+Switch(config)#
+Switch#sh vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                                Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                Fa0/23, Fa0/24
+10   data                             active    Fa0/2
+20   voice                            active    
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trnet-default                    act/unsup 
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0
+10   enet  100010     1500  -      -      -        -    -        0      0
+20   enet  100020     1500  -      -      -        -    -        0      0
+1002 fddi  101002     1500  -      -      -        -    -        0      0   
+1003 tr    101003     1500  -      -      -        -    -        0      0   
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0   
+1005 trnet 101005     1500  -      -      -        ibm  -        0      0   
+
+Remote SPAN VLANs
+------------------------------------------------------------------------------
+
+
+Primary Secondary Type              Ports
+------- --------- ----------------- ------------------------------------------
+
+Switch#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#int fa0/1
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#exit
+Switch(config)#int fa 0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#switchport voice vlan 20
+Switch(config-if)#exit
+Switch(config)#int fa 0/3
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#switchport voice vlan 20
+Switch(config-if)#exit
+=============================================================================
+Router(config)#telephony-service 
+Router(config-telephony)#max-dn 3
+Router(config-telephony)#max-ephones 2
+Router(config-telephony)#ip source-address 192.168.20.1 port 2000
+Router(config-telephony)#exit
+
+Router(config)#ephone-dn
+Router(config)#ephone-dn 1
+Router(config-ephone-dn)#%LINK-3-UPDOWN: Interface ephone_dsp DN 1.1, changed state to up
+
+Router(config-ephone-dn)#number 100
+Router(config-ephone-dn)#exit
+Router(config)#ephone-dn 2
+Router(config-ephone-dn)#%LINK-3-UPDOWN: Interface ephone_dsp DN 2.1, changed state to up
+
+Router(config-ephone-dn)#number 200
+Router(config-ephone-dn)#exit
+
+Router(config)#ephone 1
+Router(config-ephone)#type 7960
+Router(config-ephone)#mac-address 0005.5e8e.a5e2
+Router(config-ephone)#button 1:1
+Router(config-ephone)#exit
+Router(config)#ephone 2
+Router(config-ephone)#mac-address 0001.971c.0257
+Router(config-ephone)#type 7960
+Router(config-ephone)#button 1:2
+Router(config-ephone)#exit
+Router(config)#
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#sh eph
+Router#sh ephone 
+
+ephone-1 Mac:0005.5E8E.A5E2 TCP socket:[1] activeLine:1 UNREGISTERED*****************
+mediaActive:0 offhook:1 ringing:0 reset:0 reset_sent:0 paging 0 debug:0 caps:8
+IP:0.0.0.0 0 7960   keepalive 43 max_line 2
+ button 1: dn  CH1   DOWN
+
+ephone-2 Mac:0001.971C.0257 TCP socket:[1] activeLine:1 UNREGISTERED***********
+mediaActive:0 offhook:1 ringing:0 reset:0 reset_sent:0 paging 0 debug:0 caps:8
+IP:0.0.0.0 0 7960   keepalive 43 max_line 2
+ button 1: dn  CH1   DOWN
+
+=========================================================================================
+*******
+after giving all commands pls restart the ephone if it is not registered.....when it will take the ip, it will automatically be registered.
+=====================================================================================================
+Router#sh ephone 
+
+ephone-1 Mac:0003.E435.9E45 TCP socket:[1] activeLine:0 REGISTERED in SCCP ver 12 and Server in ver 8
+mediaActive:0 offhook:0 ringing:0 reset:0 reset_sent:0 paging 0 debug:0 caps:8
+IP:192.168.20.11 1060 7960   keepalive 43 max_line 2
+ button 1: dn 1  number 100 CH1   IDLE
+
+ephone-2 Mac:000C.CFAE.0117 TCP socket:[1] activeLine:0 REGISTERED in SCCP ver 12 and Server in ver 8
+mediaActive:0 offhook:0 ringing:0 reset:0 reset_sent:0 paging 0 debug:0 caps:8
+IP:192.168.20.10 1064 7960   keepalive 43 max_line 2
+ button 1: dn 2  number 200 CH1   IDLE
+========================================================================================
+The Skinny Client Control Protocol (SCCP) is a proprietary network terminal control protocol originally developed by Selsius Systems, which was acquired by Cisco Systems in 1998. SCCP is a lightweight IP-based protocol for session signaling with Cisco Unified Communications Manager, formerly named CallManager.
+
+========================================================================================
+Session Initiation Protocol (SIP)
+The Session Initiation Protocol is a signaling protocol that enables the Voice Over Internet Protocol (VoIP) by defining the messages sent between endpoints and managing the actual elements of a call.
+========================================================================================
+Voice over Internet Protocol (VoIP), is a technology that allows you to make voice calls using a broadband Internet connection instead of a regular (or analog) phone line.

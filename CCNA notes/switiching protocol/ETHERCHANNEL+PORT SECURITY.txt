@@ -1,0 +1,101 @@
+EtherChannels
+================
+It is common to need higher bandwidth speeds for certain kinds of connections in your network, such as connections from the access layer to the distribution layer,
+between distribution layer switches, between distribution and core layer switches,
+and between certain servers or routers and their connected switches. For example,
+in Figures 14-1 and 14-14 you can see dual layer 2 connections between the two
+distribution layer switches as well as between the distribution and core layer
+switches. The problem with this type of design, however, is that it creates layer 2
+loops; and with STP running, STP will ensure that only one path is active between
+two devices, limiting you to the bandwidth of one of possibly multiple connections.
+
+
+EtherChannel Overview
+=========================
+An EtherChannel is a layer 2 solution that allows you to aggregate multiple layer
+2 Ethernet-based connections between directly connected devices. Basically, an
+EtherChannel bundles together multiple Ethernet ports between devices, providing
+what appears to be single logical interface. From STP’s perspective, it sees the
+EtherChannel as a single logical connection between the connected devices, which
+means that you can actually use all of the individual connections, simultaneously, in
+the channel you’ve created.
+
+EtherChannels provide these advantages:
+
+■ Redundancy If one connection in the channel fails, you can use other
+connections in the channel.
+■ More bandwidth Each connection can be used simultaneously to send frames.
+■ Simplified management Configuration is done on the logical interface, not
+on each individual connection in the channel.
+
+
+EtherChannel Restrictions
+===========================
+Interfaces in an EtherChannel must be configured identically: speed, duplexing,and VLAN settings (in the same VLAN if they are access ports, or the same trunk properties) must be the same. When setting up EtherChannels, you can use
+up to eight interfaces bundled together:
+■ Up to eight Fast Ethernet connections, providing up to 800 Mbps
+■ Up to eight Gigabit Ethernet connections, providing up to 8 Gbps
+■ Up to eight 10-Gigabit Ethernet connections, providing up to 80 Gbps
+
+***You can have a total of "six EtherChannels" on a switch.
+
+
+Protocols Description
+========================
+PAgP Proprietary to Cisco. It allows connected devices to group similarly
+configured ports dynamically into a single channel.
+
+
+LACP Defined in the IEEE 802.3ad standard. Like PAgP, it learns from
+a connected device which ports between the two are identically
+configured and dynamically forms a channel between them.
+
+To configure load balancing properly for a channel, you must understand the
+traffic patterns in your network. Once you understand your traffic patterns,
+you can get the most utilization out of your channel by choosing the correct
+load balancing type.
+
+======================================================================================
+Mode Protocol Description
+===============================
+auto==>PAgP==>Passively listens for PAgP queries from a Cisco device configured with
+either desirable or on. By default the interface is not part of a channel.
+
+desirable==>PAgP==>Generates PAgP queries to form a channel, but by default is not part of a
+channel.
+
+on==> PAgP Generates PAgP queries and assumes the port is part of a channel.
+
+
+active==>LACP==>Enables a channel if the other side responds to its LACP messages.
+
+passive==>LACP==>Passively listens for LACP messages to form a channel from an active port.
+====================================================================================================
+
+Port Security Feature
+=-======================
+
+Port security is a switch feature that allows you to lock down switch ports based on the MAC address or addresses associated with the interface, preventing unauthorized access to a LAN. For example, if MAC address 0001.001c.dddd is supposed to be off of fa0/1, but it is seen off of fa0/2, this would be considered a security violation.
+
+Or, if more addresses are seen off the interface than you allow, this would also be considered a violation. As an administrator, you control what should happen when a violation occurs, be it generating a notification about the issue, dropping traffic for the MAC address that caused the violation, or completely disabling the port where the violation occurred.
+
+The fifth command on the interface specifies what should occur if a security violation occurs—the MAC address is seen connected to a different port. 
+
+Three options are possible:
+
+■ protect When the number of secure addresses reaches the maximum
+number allowed, any additionally learned addresses will be dropped. This
+applies only if you have enabled the sticky option.
+
+■ restrict Causes the switch to generate a security violation alert.
+
+■ shutdown Causes the switch to generate an alert and to disable the
+interface. The only way to re-enable the interface is to use the no shutdown command. This is the default violation mode if you don’t specify the mode.
+
+**Physical SW or GNS3
+
+Switch(Config-if)#errdisable recovery cause psecure-violation shutdown
+Switch(Config-if)#no sh
+Switch#wr
+Switch#reload
+

@@ -1,0 +1,137 @@
+
+======================================================================
+Router>en
+Router#conf t
+Router(config)#hostname R1
+R1(config)#router eigrp ?
+  <1-65535>  Autonomous system number
+R1(config)#router eigrp 1
+R1(config-router)#network 10.0.0.0
+R1(config-router)#network 192.168.90.0
+======================================================
+R2(config)#router eigrp 1
+R2(config-router)#network 10.0.0.0
+R2(config-router)#
+%DUAL-5-NBRCHANGE: IP-EIGRP 1: Neighbor 10.1.1.1 (Serial0/3/0) is up: new adjacency
+
+R2(config-router)#network 20.0.0.0
+R2(config-router)#network 192.168.100.0
+========================================================================
+R3(config)#router eigrp 1
+R3(config-router)#network 20.0.0.0
+R3(config-router)#
+%DUAL-5-NBRCHANGE: IP-EIGRP 1: Neighbor 20.1.1.1 (Serial0/3/0) is up: new adjacency
+R3(config-router)#network 192.168.110.0
+=====================================================================
+How to view Routing Table
+
+R1#sh ip route 
+
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+D    20.0.0.0/8 [90/41024000] via 10.1.1.2, 00:02:14, Serial0/3/0
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+D    192.168.100.0/24 [90/40514560] via 10.1.1.2, 00:02:08, Serial0/3/0
+D    192.168.110.0/24 [90/41026560] via 10.1.1.2, 00:00:31, Serial0/3/0
+
+C=DIRECTLY CONNECTED ROUTE
+D=EIGRP ROUTE USING DUAL ALGORITHM
+90=DEFAULT AD FOR INTERNAL EIGRP(WITHIN SAME AS)
+40514560=FEASIBLE DISTANCE.
+10.1.1.2=NEXT HOP IP ADDRESS.
+=================================================================
+how to view only eigrp route in EIGRP Routing Table
+
+R1#sh ip route eigrp 
+
+D    20.0.0.0/8 [90/41024000] via 10.1.1.2, 00:12:25, Serial0/3/0
+D    192.168.100.0/24 [90/40514560] via 10.1.1.2, 00:12:19, Serial0/3/0
+D    192.168.110.0/24 [90/41026560] via 10.1.1.2, 00:10:42, Serial0/3/0
+===================================================================
+How to view which protocols is running?
+
+R1#sh ip protocols 
+Routing Protocol is "eigrp  1 " 
+  EIGRP metric weight K1=1, K2=0, K3=1, K4=0, K5=0
+  EIGRP maximum hopcount 100
+  EIGRP maximum metric variance 1
+Redistributing: eigrp 1
+  Automatic network summarization is in effect  
+  Automatic address summarization: 
+  Maximum path: 4
+  Routing for Networks:  
+     10.0.0.0
+     192.168.90.0
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    10.1.1.2        90            1232912    
+  Distance: internal 90 external 170
+==========================================================
+How to view the topology table
+
+R1#sh ip eigrp topology 
+
+IP-EIGRP Topology Table for AS 1/ID(192.168.90.1)
+
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - Reply status
+
+P 10.0.0.0/8, 1 successors, FD is 40512000
+         via Connected, Serial0/3/0
+P 20.0.0.0/8, 1 successors, FD is 41024000
+         via 10.1.1.2 (41024000/40512000), Serial0/3/0
+P 192.168.90.0/24, 1 successors, FD is 28160
+         via Connected, FastEthernet0/0
+P 192.168.100.0/24, 1 successors, FD is 40514560
+         via 10.1.1.2 (40514560/28160), Serial0/3/0
+P 192.168.110.0/24, 1 successors, FD is 41026560
+         via 10.1.1.2 (41026560/40514560), Serial0/3/0
+
+
+40514560=FD
+28160=LD
+40514560-28160=40486400==RD(REPORTED DISTANCE) OR AD(ADVERTISE DISTANCE)
+P=PASSIVE STATE
+A=ACTIVE STATE
+
+**IN A TOPOLOGY TABLE U CAN HAVE MAXIMUM 6 FEASIBLE SUCCESSOR ROUTE.**
+=========================================================================
+How to view EIGRP Neighbors Table
+
+R1#SH IP EIGRp neighbors
+ 
+IP-EIGRP neighbors for process 1
+H   Address         Interface      Hold Uptime    SRTT   RTO   Q   Seq
+                                   (sec)          (ms)        Cnt  Num
+0   10.1.1.2        Se0/3/0        13   00:24:24  40     1000  0   9
+
+R2#sh ip eigrp neighbors 
+IP-EIGRP neighbors for process 1
+H   Address         Interface      Hold Uptime    SRTT   RTO   Q   Seq
+                                   (sec)          (ms)        Cnt  Num
+0   10.1.1.1        Se0/3/0        10   00:28:21  40     1000  0   7
+1   20.1.1.2        Se0/2/0        12   00:26:38  40     1000  0   8
+
+
+***Table you have to write
+===================================================================
+how to view Different EIGRP Packets
+===================================
+R2#sh ip eigrp traffic 
+IP-EIGRP Traffic Statistics for process 100
+  Hellos sent/received: 94/57
+  Updates sent/received: 9/9
+  Queries sent/received: 0/0
+  Replies sent/received:  0/0
+  Acks sent/received:  9/7
+=======================================================================
+How to view the interface information in EIGRP.
+
+R2#sh ip eigrp interfaces 
+IP-EIGRP interfaces for process 100
+
+                        Xmit Queue   Mean   Pacing Time   Multicast    Pending
+Interface        Peers  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Se0/3/0            1        0/0      1236       0/10           0           0
+Se0/2/0            1        0/0      1236       0/10           0           0
+Fa0/0              0        0/0      1236       0/10           0           0
+========================================================================================================================================================

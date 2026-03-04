@@ -1,0 +1,134 @@
+OSPF VIRTUAL LINK CONFIGURATION
+================================
+R1
+===
+1.BASIC IP SETTINGS AS PER DIAGRAM
+
+2.Router(config)#router ospf 1
+Router(config-router)#network 11.0.0.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.1.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.2.0 0.0.0.255 area 10
+Router(config-router)#network 11.0.3.0 0.0.0.255 area 10
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 20
+
+===================================================================
+R2
+===
+1.BASIC IP SETTINGS AS PER DIAGRAM
+
+2.Router(config)#router ospf 1
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 1.0.0.0 0.255.255.255 area 20
+00:11:06: %OSPF-5-ADJCHG: Process 1, Nbr 11.0.3.1 on Serial0/2/0 from LOADING to FULL, Loading Done
+
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 20
+
+===================================================================
+R3
+===
+1.BASIC IP SETTINGS AS PER DIAGRAM
+
+
+2.Router(config)#router ospf 1
+Router(config-router)#network 2.0.0.0 0.255.255.255 area 20
+Router(config-router)#
+00:12:40: %OSPF-5-ADJCHG: Process 1, Nbr 20.1.1.1 on Serial0/2/0 from LOADING to FULL, Loading Done
+
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 20
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 0
+===================================================================
+R4
+===
+1.BASIC IP SETTINGS AS PER DIAGRAM
+
+
+2.Router(config)#router ospf 1
+
+Router(config-router)#network 3.0.0.0 0.255.255.255 area 0
+
+00:14:28: %OSPF-5-ADJCHG: Process 1, Nbr 30.1.1.1 on Serial0/3/0 from LOADING to FULL, Loading Done
+
+
+Router(config-router)#network 40.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 14.0.0.0 0.0.0.255 area 0
+Router(config-router)#network 14.0.1.0 0.0.0.255 area 0
+Router(config-router)#network 14.0.2.0 0.0.0.255 area 0
+Router(config-router)#network 14.0.3.0 0.0.0.255 area 0
+===================================================================
+RID CONFIGURATION ON BOTH ABR AS PER OUR DIAGRAM
+
+AS PER OUR DIAGRAM ABR ARE R1 & R3
+
+R1
+===
+Router(config)#router ospf 1
+Router(config-router)#router-id 33.1.1.1
+Router(config-router)#Reload or use "clear ip ospf process" command, for this to take effect
+Router(config-router)#exit
+Router(config)#exit
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+Router#clear ip ospf process 
+Reset ALL OSPF processes? [no]: yes
+
+
+
+
+R3
+===
+Router(config)#router ospf 1
+Router(config-router)#router-id 33.1.1.2
+Router(config-router)#Reload or use "clear ip ospf process" command, for this to take effect
+Router(config-router)#exit
+Router(config)#exit
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+Router#clear ip ospf process 
+Reset ALL OSPF processes? [no]: yes
+
+===============================================================================================
+OSPF Virtual Link Configuration.
+================================
+
+R1
+====
+Router(config)#router ospf 1
+Router(config-router)#area 20 virtual-link 33.1.1.2
+
+00:24:49: %OSPF-5-ADJCHG: Process 1, Nbr 33.1.1.2 on OSPF_VL0 from LOADING to FULL, Loading Done
+
+R3
+===
+
+Router(config)#router ospf 1
+Router(config-router)#area 20 virtual-link 33.1.1.1
+
+00:24:24: %OSPF-5-ADJCHG: Process 1, Nbr 33.1.1.1 on OSPF_VL0 from LOADING to FULL, Loading Done
+
+===========================================================================================
+VERIFICATION
+=============
+R1
+====
+Router#sh ip route ospf 
+
+O    2.0.0.0 [110/2776] via 1.1.1.2, 00:14:21, Serial0/3/0
+O    3.0.0.0 [110/4164] via 1.1.1.2, 00:00:55, Serial0/3/0
+     14.0.0.0/32 is subnetted, 4 subnets
+O       14.0.0.1 [110/4165] via 1.1.1.2, 00:00:55, Serial0/3/0
+O       14.0.1.1 [110/4165] via 1.1.1.2, 00:00:55, Serial0/3/0
+O       14.0.2.1 [110/4165] via 1.1.1.2, 00:00:55, Serial0/3/0
+O       14.0.3.1 [110/4165] via 1.1.1.2, 00:00:55, Serial0/3/0
+
+R4
+===
+Router#sh ip route ospf 
+O IA 1.0.0.0 [110/192] via 3.3.3.1, 00:05:57, Serial0/3/0
+O IA 2.0.0.0 [110/128] via 3.3.3.1, 00:05:57, Serial0/3/0
+     11.0.0.0/32 is subnetted, 4 subnets
+O IA    11.0.0.1 [110/193] via 3.3.3.1, 00:02:00, Serial0/3/0
+O IA    11.0.1.1 [110/193] via 3.3.3.1, 00:02:00, Serial0/3/0
+O IA    11.0.2.1 [110/193] via 3.3.3.1, 00:02:00, Serial0/3/0
+O IA    11.0.3.1 [110/193] via 3.3.3.1, 00:02:00, Serial0/3/0

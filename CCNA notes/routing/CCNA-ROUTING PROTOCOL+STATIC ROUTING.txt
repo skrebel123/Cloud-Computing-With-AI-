@@ -1,0 +1,204 @@
+============================================================
+ROUTING PROTOCOLS TYPES
+---------------------
+
+Routing Protocol=
+IT IS USED TO FIND OUT THE BEST PATH AMONG ALL POSSIBLE PATH FROM SOURCE TO DESTINATION.IT WILL SELECT THE BEST PATH HAVING LEAST METRIC VALUE.
+
+METRIC OF DIFFERENT ROUTING PROTOCOLS.
+
+1.RIP==>HOP COUNT
+2.EIGRP==>BANDWIDTH,DELAY,LOAD,RELIABILITY,MTU
+3.OSPF==>COST
+
+e.g=Static Routing Default Routing RIP,EIGRP,OSPF,BGP,IS-IS
+
+ROUTED PROTOCOL
+
+ITS USED TO TRANSFER DATA PACKETS FROM ONE INTERFACE TO ANOTHER OF ANY ROUTER OR THE MULTIPLE NETWORK DEVICES.
+
+e.g IP, IPX, APPLE TALK.
+
+ROUTING PROTOCOL TYPE
+=========================
+
+1.STATIC ROUTING PROTOCOLS
+2.DEFAULT ROUTING PROTOCOLS
+3.DYNAMIC ROUTING PROTOCOLS
+
+
+1.FEATURES OF STATIC ROUTING PROTOCOLS
+=======================================
+A)CONFIGURED BY ADMINISTRATOR MANUALLY
+B)SECURE
+C)USED FOR SMALL ORGANISATION
+D)AD VALUE IS 0(DIRECTLY CONNECTED) & 1(STATIC ROUTE)
+
+Static Routing=1/0
+Default Routing=1/0
+RIP=120
+EIGRP=90/170(90=Internal EIGRP & 170=External EIGRP)
+OSPF=110
+
+
+***
+METRIC IS A PARAMETER BY WHICH A ROUTING PROTOCOL SELECT ITS BEST ROUTE TO REACH TO THE DESTINATION.
+
+
+HOP=THE TOTAL NO OF ROUTER THAT HAS TO BE CROSSED TO REACH TO THE DESTINATION EXCEPT MY OWN ROUTER.
+
+rbs--maidan---pst--esp---chand--central--mg road--girish--sova-sha--belga--dumdum
+
+192.168.60.0
+255.255.255.0
+
+
+150.96.85.0
+255.255.0.0
+
+20.1.1.0
+
+255.0.0.0
+
+SYNTAX FOR STATIC ROUTING
+==============================
+Router(Config)#ip route <destination nw add> <destination nw sm> <next hop(R) ip add> <default AD Value> permanent
+ 
+				OR
+
+ip route <destination nw add> <destination nw sm> <Own Router exit int Port No> <default AD Value> permanent
+
+permanent=if we use this "permanent" commands then the flapping routes will be present in the routing table without erasing.No need to configure these again.
+============================================================
+==========================================================
+
+
+R1 BASIC CONFIGURATION
+======================
+Router>EN
+Router#CONF T
+Router(config)#int fa 0/0
+Router(config-if)#ip address 192.168.90.1 255.255.255.0
+Router(config-if)#no sh
+Router(config-if)#exit
+Router(config)#
+Router(config)#int serial 0/3/0
+Router(config-if)#ip add
+Router(config-if)#ip address 10.1.1.1 255.0.0.0
+Router(config-if)#no sh
+Router(config-if)#clock rate 64000
+Router(config-if)#bandwidth 64
+Router(config-if)#ctrl+c
+Router#wr
+Building configuration...
+[OK]
+Router#
+
+===========================================================
+R2 BASIC CONFIGURATION
+======================
+Router>EN
+Router#CONF T
+Router(config)#hostname R2
+R2(config)#int fa 0/0
+R2(config-if)#ip address 192.168.100.1 255.255.255.0
+R2(config-if)#no sh
+R2(config-if)#exit
+R2(config)#int serial 0/3/0
+R2(config-if)#ip address 10.1.1.2 255.0.0.0
+R2(config-if)#no sh
+
+R2(config-if)#int serial  0/2/0
+R2(config-if)#ip address 20.1.1.1 255.0.0.0
+R2(config-if)#no sh
+R2(config-if)#clock rate 64000
+R2(config-if)#bandwidth 64
+R2#wr
+Building configuration...
+[OK]
+R2#
+
+==============================================================
+R3 BASIC CONFIGURATION
+======================
+Router>en
+Router#conf t
+Router(config)#hostname R3
+R3(config)#int fa 0/0
+R3(config-if)#ip address 192.168.110.1 255.255.255.0
+R3(config-if)#no sh
+R3(config-if)#exit
+R3(config)#int serial 0/3/0
+R3(config-if)#ip address 20.1.1.2 255.0.0.0
+R3(config-if)#no sh
+R3#wr
+Building configuration...
+[OK]
+====================================================
+Static Route
+
+R.No	destination	destination	next hop       exit int
+	nw add		s.m					
+=============================================================
+R1	20.0.0.0	255.0.0.0	10.1.1.2	S0/3/0
+	192.168.100.0	255.255.255.0	10.1.1.2	S0/3/0
+	192.168.110.0	255.255.255.0	10.1.1.2	S0/3/0
+==============================================================
+R2	192.168.90.0	255.255.255.0	10.1.1.1	S0/3/0
+	192.168.110.0	255.255.255.0	20.1.1.2	S0/2/0
+==============================================================
+R3	10.0.0.0	255.0.0.0	20.1.1.1	S0/3/0
+	192.168.90.0	255.255.255.0	20.1.1.1	S0/3/0
+	192.168.100.0	255.255.255.0	20.1.1.1	S0/3/0
+==============================================================
+R1 STATIC ROUTE CONFIGURATION
+=============================
+Router(config)#hostname R1
+R1(config)#ip route 20.0.0.0 255.0.0.0 10.1.1.2 
+R1(config)#ip route 192.168.100.0 255.255.255.0 10.1.1.2
+R1(config)#ip route 192.168.110.0 255.255.255.0 10.1.1.2
+==============================================================
+R2 STATIC ROUTE CONFIGURATION
+=============================
+R2>EN
+R2#conf t
+R2(config)#hostname R2
+R2(config)#ip route 192.168.90.0 255.255.255.0 10.1.1.1
+R2(config)#ip route 192.168.110.0 255.255.255.0 20.1.1.2
+==============================================================
+R3 STATIC ROUTE CONFIGURATION
+=============================
+R3(config)#hostname R3
+R3(config)#ip route 10.0.0.0 255.0.0.0 20.1.1.1
+R3(config)#ip route 192.168.90.0 255.255.255.0 20.1.1.1
+R3(config)#ip route 192.168.100.0 255.255.255.0 20.1.1.1
+============================================================
+How to view the Routing Table
+R1#sh ip route 
+
+C    10.0.0.0/8 is directly connected, Serial0/3/0
+S    20.0.0.0/8 [1/0] via 10.1.1.2
+C    192.168.90.0/24 is directly connected, FastEthernet0/0
+S    192.168.100.0/24 [1/0] via 10.1.1.2
+S    192.168.110.0/24 [1/0] via 10.1.1.2
+
+C= Directly Connected Route
+S=Static Route
+1= Default AD Value for Static Route
+0= No of Hops
+10.1.1.2=Next Hop IP Address.
+======================================================
+How to view the only Static Route In Routing Table
+R1#sh ip route static
+ 
+S    20.0.0.0/8 [1/0] via 10.1.1.2
+S    192.168.100.0/24 [1/0] via 10.1.1.2
+S    192.168.110.0/24 [1/0] via 10.1.1.2
+==============================================================
+hw
+=====
+
+1.configure static routing with 5 routers using next hop ip add
+2.configure static routing with 3 routers using exit interface and compare the result of two(one with next hop ip add & the other with exit int)
+
+=============================================================

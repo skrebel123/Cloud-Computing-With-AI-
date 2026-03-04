@@ -1,0 +1,236 @@
+Router>en
+Router(config)#int fa 0/0
+Router(config-if)#ip add
+Router(config-if)#ip address 192.168.90.1 255.255.255.0
+Router(config-if)#no sh
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+Router(config-if)#exit
+Router(config)#int ser
+Router(config)#int serial 0/3/0
+Router(config-if)#ip add
+Router(config-if)#ip address 10.1.1.1 255.0.0.0
+Router(config-if)#no sh
+
+%LINK-5-CHANGED: Interface Serial0/3/0, changed state to down
+Router(config-if)#
+Router(config-if)#clo
+Router(config-if)#clock rat
+Router(config-if)#clock rate 64000
+Router(config-if)#band
+Router(config-if)#bandwidth 64
+Router(config-if)#exit
+Router(config)#
+Router(config)#
+Router(config)#
+Router(config)#hos
+Router(config)#hostname ownrouter
+ownrouter(config)#ena
+ownrouter(config)#enable pass
+ownrouter(config)#enable password ccna
+ownrouter(config)#line vty 0 4
+ownrouter(config-line)#pass
+ownrouter(config-line)#password ccna
+ownrouter(config-line)#login
+ownrouter(config-line)#exit
+ownrouter(config)#router rip ver 2
+                             ^
+% Invalid input detected at '^' marker.
+	
+ownrouter(config)#router rip 
+ownrouter(config-router)#ver 2
+ownrouter(config-router)#net
+ownrouter(config-router)#network 192.168.90.0
+ownrouter(config-router)#network 1.1.1.1 255.0.0.0
+                                         ^
+% Invalid input detected at '^' marker.
+	
+ownrouter(config-router)#network 10.1.1.1 255.0.0.0
+                                          ^
+% Invalid input detected at '^' marker.
+	
+ownrouter(config-router)#network 1.0.0.0
+ownrouter(config-router)#
+ownrouter#
+%SYS-5-CONFIG_I: Configured from console by console
+
+ownrouter#wr
+Building configuration...
+[OK]
+ownrouter#wr
+Building configuration...
+[OK]
+ownrouter#
+=====================================================
+STATIC NAT 
+==========
+***OWN ROUTER ONLY***
+
+ownrouter(config)#ip nat inside source static 192.168.90.2 10.1.1.50
+ownrouter(config)#ip nat inside source static 192.168.90.3 10.1.1.51
+
+ownrouter(config)#int serial 0/3/0
+ownrouter(config-if)#ip nat outside 
+ownrouter(config-if)#int fa 0/0
+ownrouter(config-if)#ip nat inside 
+=====================================================================
+HOW TO CHECK NAT TABLE
+
+ownrouter#sh ip nat translations 
+
+Pro  Inside global     Inside local       Outside local      Outside global
+---  10.1.1.50         192.168.90.2       ---                ---
+---  10.1.1.51         192.168.90.3       ---                ---
+==========================================================================
+PC>ping 10.1.1.50
+
+Pinging 10.1.1.50 with 32 bytes of data:
+
+Reply from 10.1.1.50: bytes=32 time=1ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=8ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=1ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=8ms TTL=126
+
+Ping statistics for 10.1.1.50:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 8ms, Average = 4ms
+
+PC>
+PC>ping 10.1.1.51
+
+Pinging 10.1.1.51 with 32 bytes of data:
+
+Reply from 10.1.1.51: bytes=32 time=2ms TTL=126
+Reply from 10.1.1.51: bytes=32 time=1ms TTL=126
+Reply from 10.1.1.51: bytes=32 time=1ms TTL=126
+Reply from 10.1.1.51: bytes=32 time=1ms TTL=126
+
+Ping statistics for 10.1.1.51:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 2ms, Average = 1ms
+
+PC>
+PC>
+PC>
+PC>ping 192.168.90.4
+
+Pinging 192.168.90.4 with 32 bytes of data:
+
+Request timed out.
+Reply from 192.168.90.4: bytes=32 time=1ms TTL=126
+Reply from 192.168.90.4: bytes=32 time=1ms TTL=126
+Reply from 192.168.90.4: bytes=32 time=1ms TTL=126
+
+Ping statistics for 192.168.90.4:
+    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 1ms, Average = 1ms
+
+PC>
+PC>ping 192.168.90.2
+
+Pinging 192.168.90.2 with 32 bytes of data:
+
+Reply from 10.1.1.50: bytes=32 time=13ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=14ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=2ms TTL=126
+Reply from 10.1.1.50: bytes=32 time=1ms TTL=126
+
+Ping statistics for 192.168.90.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 14ms, Average = 7ms
+
+PC>
+=====================================================================
+DYNAMIC NAT
+===============
+ownrouter(config)#access-list 1 permit 192.168.90.2 0.0.0.0
+ownrouter(config)#access-list 1 permit 192.168.90.3 0.0.0.0
+
+ownrouter(config)#ip nat pool abc 10.1.1.66 10.1.1.77 netmask 255.0.0.0
+
+ownrouter(config)#ip nat inside source list 1 pool abc 
+
+ownrouter(config)#int fa 0/0
+
+ownrouter(config-if)#ip nat inside 
+ownrouter(config-if)#int serial 0/3/0
+
+ownrouter(config-if)#ip nat outside 
+====================================================================
+HOW TO VIEW NAT TABLE
+======================
+ownrouter#SH IP NAT TRanslations 
+
+***STATIC NAT ==FROM THE BEGINING ENTRY WILL BE PRESENT IN NAT TABLE
+
+BUT NOT IN CASE OF DYNAMIC NAT.
+===============================================================
+AFTER ACCESSING FROM THE INSIDE NW==NAT TABLE===DYNAMIC NAT
+=============================================================
+ownrouter#SH IP NAT TRanslations
+ 
+Pro  Inside global     Inside local       Outside local      Outside global
+tcp 10.1.1.66:1025     192.168.90.2:1025  10.1.1.2:23        10.1.1.2:23
+tcp 10.1.1.67:1025     192.168.90.3:1025  10.1.1.2:23        10.1.1.2:23
+======================================================================
+NAT WITH OVERLOAD(DYNAMIC NAT WITH OVERLOAD) OR PAT OR PORT ADDRESS TRANSLATION
+======================================================================
+ownrouter(config)#access-list 1 permit 192.168.90.2 0.0.0.0
+ownrouter(config)#access-list 1 permit 192.168.90.3 0.0.0.0
+
+ownrouter(config)#ip nat pool chagol 10.1.1.90 10.1.1.90 netmask 255.0.0.0
+ownrouter(config)#ip nat inside source list 1 pool chagol overload 
+
+ownrouter(config)#int fa 0/0
+ownrouter(config-if)#ip nat inside 
+ownrouter(config-if)#int serial 0/3/0
+ownrouter(config-if)#ip nat outside
+
+ownrouter#sh ip nat translations 
+ownrouter#
+
+=======================================================================
+NAT WITH OVERLOAD(PAT/PORT ADDRESS TRANSLATION.)
+========================
+Router(config)#access-list 1 permit 192.168.90.2 0.0.0.0
+Router(config)#access-list 1 permit 192.168.90.3 0.0.0.0
+Router(config)#ip nat pool pagol 10.1.1.160 10.1.1.160 netmask 255.0.0.0
+Router(config)#ip nat inside source list 1 pool pagol overload 
+
+Router(config)#int fa 0/0
+Router(config-if)#ip nat inside 
+Router(config-if)#int serial 0/3/0
+Router(config-if)#ip nat outside 
+
+Router(config)#access-list 1 permit 192.168.90.2 0.0.0.0
+--------------------------------------------------------------------------
+Router#sh ip nat translations 
+Router#
+
+Nothing in Nat Table at starting Position.
+
+after the PC is trying to access other PC or trying to go out....
+
+Router#sh ip nat translations 
+
+Pro  Inside global     Inside local       Outside local      Outside global
+tcp 10.1.1.160:1024    192.168.90.3:1025  10.1.1.2:23        10.1.1.2:23
+tcp 10.1.1.160:1025    192.168.90.2:1025  10.1.1.2:23        10.1.1.2:23
+tcp 10.1.1.160:1026    192.168.90.2:1026  10.1.1.2:23        10.1.1.2:23
+
+==========================================================================
+
+hw
+===
+1.Ping on telnet block
+2.Ping off Telnet on
+3.Ping & Telnet on but www off
+4.practice Static Dynamic NAT & PAT.

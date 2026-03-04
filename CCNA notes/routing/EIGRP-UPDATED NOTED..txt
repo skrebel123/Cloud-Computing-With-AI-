@@ -1,0 +1,158 @@
+EIGRP
+=======
+1.ENHANCED INTERIOR GATEWAY ROUTING PROTOCOL
+2.ADVANCED DISTANCE VECTOR ROUTING PROTOCOL
+3.SUPPORT MULTICAST(224.0.0.10)
+4.FAST CONVERGENCE(5SEC)==Hello Interval Timer
+5.DEAD INTERVAL TIME=15SEC(3 Times of Hello Interval Timer=3*5=15sec)
+6.DEFAULT AD VALUE=90 FOR INTERNAL EIGRP(WITHIN SAME AS) & 170 FOR EXTERNAL EIGRP(WITHIN DIFFERENT AS)
+*AS=AUTONOMOUS SYSTEM NUMBER
+7.DEFAULT HOP COUNT=100 & MAX HOP COUNT WILL BE 255
+8.DEFAULT METRIC=TOTAL 5 DIFFERENT METRIC ARE THERE
+	A)BANDWIDTH
+	B)DELAY
+	C)LOAD
+	D)RELIABILITY
+	E)MTU(MAXIMUM TRANSMISSION UNIT)
+
+By default, K1 = 1, K2 = 0, K3 = 1, K4 = 0, K5 = 0.
+
+K1=BANDWIDTH***==1(BY DEFAULT)
+K2=LOAD==0(BY DEFAULT)
+K3=DELAY***==1(BY DEFAULT)
+K4=RELIABILITY==0(BY DEFAULT)
+K5=MTU(MAXIMUM TRANSMISSION UNIT)==0(BY DEFAULT)
+
+Delay equals the sum of all the delays of the links along the path.
+Delay = [Delay in 10s of microseconds] × 256.
+
+Bandwidth is the lowest bandwidth of the links along the path.
+Bandwidth = [10000000 / (bandwidth in Kbps)] × 256.
+
+**By default, metric = lowest bandwidth along path + sum of all delays along path.
+
+*ROUTE HAVING LEAST (BW+DLY+LOAD+RELIABILITY+MTU)===BEST ROUTE==>THESE 5 METRIC ARE ALSO KNOWN AS COMPOSIT METRIC.
+
+9.INCREMENTAL UPDATE
+10.IT SUPPORTS PDM(PROTOCOL DEPENDENT MODULE)
+
+
+
+
+
+
+
+11.EIGRP SUPPORT 3 DIFFERENT TABLES
+
+	A)NEIGHBOUR/NEIGHBOR TABLE==>KEEPS ONLY DIRECTLY CONNECTED ROUTE
+
+	B)TOPOLOGY TABLE=KEEP THE ENIRE TOPOLOGIOCAL INFORMATION MEANS ALL DIRECTLY & INDIRECTLY CONNECTED ROUTE
+
+	C)ROUTING TABLE==KEEPS THE BEST ROUTE INFORMATION.
+
+
+Neighbor table Contains information about the specific routers with whom neighbor relationships have been formed. It also displays information about the Hello transmit interval and queue counts for unaccounted Hello acknowledgment.
+
+Topology table Stores the route advertisements received from each neighbor. All routes in the AS are stored in the topology table, both successors and feasible successors.
+
+Route table Stores the routes that are currently in use to make local routing decisions.Anything in the routing table is considered a successor route.
+
+
+Neighbor table Each router keeps state information about adjacent neighbors. When a newly discovered neighbor is found, its address and interface are recorded and the information is held
+in the neighbor table, stored in RAM. Sequence numbers are used to match acknowledgments with update packets. The last sequence number received from the neighbor is recorded so that out-of-order packets can be detected. We’ll get into this more, later in the chapter, when we look
+at the neighbor table and find out how it’s useful for troubleshooting links between neighbor routers.
+
+
+Topology table The topology table is populated by the neighbor table and the Diffusing Update Algorithm (DUAL) calculates the best loop-free path to each remote network. It contains all destinations advertised by neighboring routers, holding each destination address and a list of
+neighbors that have advertised the destination. For each neighbor, the advertised metric (distance), which comes only from the neighbor’s routing table, is recorded, as well as the FD.
+
+The best path to each remote network is copied and placed in the routing table and then IP will use this route to forward traffic to the remote network. The path copied to the routing table is called a successor router—think “successful” to help you remember. The path with a good, but less desirable, cost will be entered in the topology table as a backup link and called the feasible successor. Let’s talk more about these terms now.
+
+12.USE DUAL ALGORITHM
+
+DUAL=DIFFUSING UPDATE ALGORITHIM************
+
+13.
+
+Feasible successor (FS) So a feasible successor is basically an entry in the topology table that represents a path that’s inferior to the successor route(s). An FS is defined as a path whose advertised distance is less than the feasible distance of the current successor and considered a backup route. EIGRP will keep up to 32 feasible successors in the topology table in 15.0 code but only up to 16 in previous IOS versions, which is still a lot! Only the path with the best metric—the successor—is copied and placed in the routing table. The show ip eigrp topology command will display all the EIGRP feasible successor routes known to the router.
+
+
+
+14.
+Successor A successor route—again, think “successful”—is the best route to a remote network. A successor route is the lowest cost to a destination and stored in the topology table along with everything else. However, this particular best route is copied and placed in the routing table so IP can use it to get to the remote network. The successor route is backed up by a feasible successor route, which is also stored in the topology table, if there’s one available. The routing table contains only successor routes; the topology table contains successor and feasible
+successor routes.
+
+15.
+
+Reported/advertised distance (RD/AD) This is the metric of a remote network, as reported by a neighbor. It’s also the routing table metric of the neighbor and is the same as the second number in parentheses as displayed in the topology table.
+
+16.
+
+Feasible distance (FD) This is the best metric among all paths to a remote network, including the metric to the neighbor that’s advertising the remote network. The route with the lowest FD is the route that you’ll find in the routing table because it’s considered the best path. The metric of a feasible distance is calculated using the metric reported by the neighbor that’s referred to as the reported or advertised distance plus the metric to the neighbor reporting the route.
+
+17.Reliable Transport Protocol (RTP)
+==================================
+EIGRP depends on a proprietary protocol, called Reliable Transport Protocol (RTP), to manage the communication of messages between EIGRP-speaking routers. As the name suggests, reliability is a key concern of this protocol, so Cisco designed this mechanism, which leverages
+multicasts and unicasts, to ensure that updates are delivered quickly and that data reception is tracked accurately.
+But how does this really work? Well, when EIGRP sends multicast traffic, it uses the Class D address 224.0.0.10, and each EIGRP router knows who its neighbors are. For each multicast it sends out, a list is built and maintained that includes all the neighbors who have replied. If a
+router doesn’t get a reply from a neighbor via the multicast, EIGRP will then try using unicasts to resend the same data. If there’s no reply from a neighbor after 16 unicast attempts, that neighbor
+will then be declared dead. This process is often referred to as reliable multicast.
+
+18.
+
+Here’s a description of the five different types of packets used by EIGRP:
+
+
+Update==>An Update packet contains route information. When these are sent in response to metric or topology changes, they use reliable multicasts. In the event that only one router needs an update, like when a new neighbor is discovered, it’s sent via unicasts. Keep in mind that the unicast method still requires an acknowledgment, so updates are always reliable regardless of their underlying delivery mechanism.
+
+Query==>A Query packet is a request for specific routes and always uses the reliable multicast method. Routers send queries when they realize they’ve lost the path to a particular network and are searching for alternatives.
+
+
+Reply==>A Reply packet is sent in response to a query via the unicast method. Replies either include a specific route to the queried destination or declare that there’s no known route.
+
+
+Hello==>A Hello packet is used to discover EIGRP neighbors and is sent via unreliable multicast, meaning it doesn’t require an acknowledgment.
+
+ACK==>An ACK packet is sent in response to an update and is always unicast. ACKs are never sent reliably because this would require another ACK sent for acknowledgment, which would just create a ton of useless traffic!
+
+19.And these three things will be exchanged with directly connected neighbors:
+
+A)Hello or ACK received
+B)AS numbers match
+C)Identical metrics (K values)
+
+20.SUPPORT VLSM
+21.SUPPORT CLASSFULL & CLASSLESS
+22.SUPPORT LOOP FREE ROUTING
+23.EASY CONFIGURATION FOR LAN & WAN
+24.PREVIOUSLY CISCO PROPRIETARY BUT NOW OPEN STANDARD ROUTING PROTOCOL.
+25.
+
+What is autonomous system no?
+
+An autonomous system number is a unique identifier that is globally available and allows its autonomous system to exchange routing information with other systems.
+
+
+***Autonomous No system means a logical group of multiple routers under a single administrative control.***
+
+Autonomous No System Range==>0 to 65,535
+
+AS No=0 is reserved, so never be used.********************
+
+Types of ASNs
+There are two types of ASNs, namely private and public ASN.
+
+A private ASN can be used for a system which is communicating via BGP (Border Gateway Protocol) with one provider
+
+Private AS No means under single ISP,like vodafone nw, or Jio nw.
+
+Private AS No Range==>64512-65535
+
+A public ASN is needed to exchange information over the Internet.
+
+Public As No means connection between multiple ISP like Vi-Jio,Vi-Airtel.
+
+Public As No Range===>1-64511
+
+
+========================================================================

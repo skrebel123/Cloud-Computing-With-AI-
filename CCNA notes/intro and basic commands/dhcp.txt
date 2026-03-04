@@ -1,0 +1,50 @@
+Rupak(config)#int fa 0/0
+Rupak(config-if)#ip address 192.168.90.1 255.255.255.0
+Rupak(config-if)#no sh
+Rupak(config-if)#exit
+Rupak(config)#ip dhcp pool abc
+Rupak(dhcp-config)#default-router 192.168.90.1
+Rupak(dhcp-config)#network 192.168.90.0 255.255.255.0
+Rupak(dhcp-config)#exit
+Rupak(config)#ip dhcp excluded-address 192.168.90.1 
+Rupak(config)#ip dhcp excluded-address 192.168.90.2 192.168.90.9
+Rupak(config)#
+
+====================================================================
+Testting
+=========
+Double Click on the PC==>ip configuration===>DHCP
+
+pc will automatically pick up ip from the pool .
+
+==========================================================================
+FOR DHCP RELAY AGENT
+=====================
+1.CREATE MIN 2 POOL ON DHCP SERVER
+2.GO TO ROUTER ===>ENTER INTO THE FA OR Gi PORT WHERE DHCP SERVER IS NOT CONNECTED 
+
+LIKE IF DHCP IS CONNECTED IN FA 0/0 THE WE HAVE TO ENTER FA 0/1
+
+
+POOL 1==192.168.90.3=====>192.168.90.100
+POOL 2==192.168.100.2====>192.168.100.50
+
+DHCP SERVER ADDRESS
+192.168.90.2
+192.168.90.1
+
+
+Rupak(config)#int fa 0/0
+Rupak(config-if)#ip address 192.168.90.1 255.255.255.0
+Rupak(config-if)#no sh
+Rupak(config-if)#exit
+
+Rupak(config)#int fa 0/1
+Rupak(config-if)#ip address 192.168.100.1 255.255.255.0
+Rupak(config-if)#no sh
+Rupak(config-if)#exit
+
+Rupak(config)#Int fa 0/1
+Rupak(config-if)#ip helper-address 192.168.90.2(DHCP Server Address)
+=========================================================================
+

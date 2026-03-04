@@ -1,0 +1,97 @@
+vlan(Virtual LAN)
+==================
+
+one physical sw==one LAN==12 port/24 port/48 port
+
+one physical sw of 24 port==24 cd & 1 bd
+
+we can logically divide the entire physical LAN into several small small LAN.
+
+So these small small LAN are known as Virtual LAN or Vlan.
+
+1 vlan of 5 ports==>1bd & 5cd
+
+1sw==>1 physical LAN===we create 5 vlan's here ===so it will 5bd
+
+1vlan==1bd(always)
+
+let us consider we create
+
+vlan 2==>4 ports==>4 cd+1bd
+vlan 3==>7 ports==>7 cd+1bd
+vlan 4==>9 ports==>9cd+1bd
+vlan 5==>10 ports==>10cd+1bd
+vlan 6==>13 ports==>13cd+1 bd
+
+how we can identify a vlan
+==========================
+a)by any name
+b)by number(1-1005)
+
+but Vlan1=Default VLan
+    Vlan 1002-1005=are reserved 
+
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trnet-default                    act/unsup 
+
+we can use 2-1001 number to identify any Vlan
+
+Types of Vlan
+================
+a)Static Vlan--we can maually assign the sw port as a member to this Vlan
+b)Dynamic Vlan--sw port can automatically be the member of the vlans depending upon the policy created on VMPS(Vlan Membership Policy Server)Server.
+
+**Note:-any sw port can be the member of any Vlan.but one port can only be the member of any one single vlan.
+
+In a Vlan we can assign continuous sw port or discrete swport means
+fa0/1-4 & fa 0/9 & fa0/23
+
+Why we create Vlan*********
+=============================
+a)Easy Management
+b)Control The Traffic
+c)Security--By default member of one Vlan will not communicate with Other Vlan.
+d)Decrease the BD size but increase the BD number.
+e)Minimizes the cost
+
+Types of Connection
+=====================
+a)Access link connection-if a pc or any end device is connected with a sw then it will known as access link connection
+
+b)Trunk Link Connection-When two or more than two switches/vlan's are connected with each other to ""transfer Vlan data"" then it is known as Trunk Link connection.Through  this Trunk link ""Tagged Data"" will be transferred.
+
+Before sending the data Tag field will be attached before the data & after receiving the data, tag field will be removed and original data will be processed.
+
+***Tag field keep the VLan Id
+
+Tag field will be added by two  different methodology
+
+a)ISL(Inter Switch Link)-By default Cisco Propritary-20byte Tag will be added before the data.Old methodology.
+
+b)IEEE 802.1q(dot1q)- Open Std.-Only 4byte Tag will be added before the data.Latest Technology.
+
+By anotherway Vlan's are of following types.
+
+a)Standard Vlan(1-1005)=Normally used.Support VTP(Vlan Trunking Protocol)-3 different Modes(Server,Client & Transparent). Can be created in L2 & L3 Switch.Support "10bit" Numbering system supported by ISL & IEEE 802.1q
+
+b)Extended Vlan's(1-4094)-- Specific Funtion.Support only VTP Transparent Mode or it should be off.Mainly works in L3 switch.Support "12bit" Numbering system by IEEE 802.1q
+
+c)Voice Vlan(Used to carry tagged Voice Data only from VOIP-Voice Over Internet Protocol phone),by using single internet connection we can send data & voice both.
+
+d)Native Vlan-Used to separate the untagged Vlan data.Generally used to prevent Vlan Hopping L2 attack.Generraly we can use 999 or 666 or 777 like number or any number to identify Native Vlan.But keep this thing in your mind that this number should not be used anywhere.
+
+L2==2950,2960
+
+L3 LOW CONFIGURATION=3550,3560
+L3 HIGH CONFIGURATION=4000,6500
+
+L3 LATEST HIGH CONFIGURATION=CISCO NEXUS SW=7000,9000***
+
+
+
+
+
+
+

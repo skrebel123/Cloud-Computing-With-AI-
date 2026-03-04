@@ -1,0 +1,139 @@
+﻿MAJOR COMPONENT OF CISCO ROUTER
+=====================================
+1.FLASH==>USED TO STORE CISCO IOS(*.BIN)==>SAME AS HDD FOR PC
+2.RAM==RANDOM ACCESS MEMORY==>SAME AS PC
+3.ROM=READ ONLY MEMORY==>SAME AS PC
+4.NVRAM==>NON VOLATILE RANDOM ACCESS MEMORY==>USED TO STORE THE CONFIGURATION FILE PERMANENTLY TILL NOT DELETED.
+=============================================================
+Read-Only Memory (ROM)
+The software in ROM cannot be changed unless you actually swap out the ROM
+chip on your router. ROM is nonvolatile—when you turn off your device, the
+contents of ROM are not erased. ROM contains the firmware necessary to boot up
+your router and typically has the following four components:
+■ POST (power-on self-test) Performs tests on the router’s hardware
+components.
+■ Bootstrap program Brings the router up and determines how the IOS image
+and configuration files will be found and loaded.
+
+ROM Monitor (ROMMON mode) A mini–operating system that
+allows you to perform low-level testing and troubleshooting; for instance,
+ROMMON is used during the password recovery procedure. To abort the
+router’s normal bootup procedure of loading the IOS, use the CTRL-BREAK
+control sequence to enter ROMMON mode. The prompt in ROMMON
+mode is either > or rommon>, depending on the router model.
+■ Mini-IOS A stripped-down version of the IOS that contains only IP code.
+This should be used in emergency situations where the IOS image in flash
+can’t be found and you want to boot up your router and load in another IOS
+image. This stripped-down IOS is referred to as RXBOOT mode. If you see
+Router(rxboot)# in your prompt, then your router has booted up with
+the ROM IOS image. Not every router has a Mini-IOS image; on the other
+hand, some routers, such as the 7200, can store a full-blown IOS image here.
+
+RXBOOT mode, also known as Boot ROM mode, isn’t part of newer routers
+and switches, such as the 1800 and 2600-1 series routers. It does appear on
+older router models, such as the 2500 series.
+
+POST performs selftests
+on the hardware. The bootstrap
+program brings the router up and finds
+the IOS image. ROMMON contains a
+mini–operating system used for low-level
+testing and debugging. The Mini-IOS is
+a stripped-down version of the IOS used
+for emergency booting of a router and is
+referred to as RXBOOT mode. All of these
+components are stored in ROM.
+=============================================================
+=============================================================
+PORTS IN ROUTER
+=================
+1.LAN PORTS
+ 
+ARE USED TO CONNECT LAPTOP/DESKTOP OR SWITCH.USED TO CREATE A CONNECTION WITH LAN.
+
+ETHERNET ==10Mbps
+FAST ETHERNET=10/100 Mbps
+GIGABIT ETHERNET=10/100/1000/10000 Mbps or 1/10 Gbps
+
+**if u want to connect Router direct to PC(Laptop/Desktop) u have to connect with Cross Cable
+
+but If u want to connect Router to Switch then u have to use Straight Cable
+
+
+***ANOTHER PORT IS PRESENT IN FEW ROUTER MODEL(2500) KNOWN AS AUI(ATTACHMENT UNIT INTERFACE) PORT==>WHERE U HAVE TO CONNECT TRANSCEIVER(DB-15 TO RJ45 COVERTER) TO CONNECT STRAIGHT/CROSS CABLES.
+
+2.WAN PORTS or SeRIAL Ports
+THESE ARE USED TO CONNECT ROUTER TO ROUTER DIRECTLY USING SERIAL CABLE.
+
+EVERY SERIAL CABLE HAS TWO ENDS, ONE IS MARKED AS DCE AND THE OTHER IS MARKED AS DTE.
+
+DCE=DATA COMMUNICATION EQUIPMENT
+DTE=DATA TERMINAL EQUIPMENT
+
+WE CAN ATTACH DIFFERENT SERIAL PORT MODULES IN ROUTER LIKE
+
+WIC-1T=WAN INTERFACE CARD===>1 PORT / MODULE===>60 PINS
+WIC-2T=WAN INTERFACE CARD===>2 PORT / MODULE===>26 PINS(PER CONNECTOR)
+
+3.ADMIN PORTS
+FROM THIS PORT U CAN CONFIGURE THE ROUTER LOCALLY/ REMOTELY
+
+A)CONSOLE PORT=USED TO CONNECT CONSOLE CABLE(LIGHT BLUE IN COLOUR) FOR LOCAL ROUTER ADMINISTRATION
+
+CONNECTION DETAILS FOR ROLLED OVER CABLE/ CONSOLE CABLE 
+SIDE A		SIDE B
+1		8	
+2		7
+3		6
+4		5
+5		4	
+6		3
+7		2
+8		1
+
+IN ONE SIDE IT MAY HAVE SERIAL CONNECTOR(DB-9 CONNECTOR) AND IN OTHER SIDE IT MAY HAVE RJ45 CONNECTOR OR ELSE BOTH THE SIDE OF THE CABLE CAN BE OF RJ45 CONNECTOR
+
+DB-9 CONNECTOR==D-SHAPED BACK PANNEL 9 PIN CONNECTOR
+
+B)AUXILIARY PORT /AUX PORT===SAME LIKE CONSOLE PORT BUT USED FOR ROUTER REMOTE ADMINISTRATION.WE HAVE TO CONNECT MODEM IN THIS PORT FOR REMOTE ADMINISTRATION.
+
+
+***IF UR DESKTOP/LAPTOP DOES NOT HAVE ANY SERIAL PORT THEN U HAVE TO USE SERAIL TO USB CONVERTER FOR CONNECTING CONSOLE CABLE.
+
+
+STRAIGHT CABLE/ CROSS CABLE===FOR LAN
+SERAIL CABLE==>FOR R TO R(WAN CONNECTION
+CONSOLE CABLE ==>FOR ROUTER ADMINISTRATION.
+
+==============================================================
+==============================================================
+FOR CONNECTING A ROUTER ===>DESIRED COM(Commnication Port) Component Setting
+==============================================================
+Speed 9600 bps(bits per second)****
+Data bits 8
+Stop bits 1
+Parity None
+Flow control None
+==============================================================
+how we can connect the Cisco Router
+==============================================================
+
+1.Console port****
+2.Auxiliary port (only certain Cisco products)
+3.Telnet(23)**
+4.Secure Shell (SSH)(22)**
+5.Web browser
+6.SNMP management station
+7.Putty****
+8.Teraterm****
+9.Hyper Terminal****
+10.Secure CRT
+11.OS X Terminal
+
+
+****these are required to connect the Cisco Router Primarily
+
+Hyper Terminal was inbuilt in Win XP,WIN 2000 & WIN 2003 SERVER.
+but now a days u have to download these software with 29Days Trial..
+
+

@@ -1,0 +1,205 @@
+EXTERNAL SERVER BASED COMMUNICATION----AAA CONFIGURATION
+============================================================
+1.BASIC IP SETTINGS IN ALL DEVICES AS PER DIAGRAM.
+
+2.TACACS+ / RADIUS SERVER CONFIGURATION
+
+SERVICE==ON
+CLIENT NAME=R1
+CLIENT IP===192.168.90.1(ROUTER IP)
+SECRET==ANY VALUE==WE HAVE USED  <ccnasecurity>
+SERVER TYPE==TACACS+
+
+===>ADD
+------------------------------------------
+USERNAME=sneha
+PASSWORD=123456
+
+===>ADD
+=========================================================
+TACACS+ CLIENT CONFIGURATION
+===============================
+1.BASIC IP SETTINGS
+
+2.
+
+Router(config)#hostname R1
+R1(config)#enable password ccna
+Router(config)#username rupak password 123456
+
+Router(config)#tacacs-server host 192.168.90.2
+Router(config)#tacacs-server key ccnasecurity
+Router(config)#aaa new-model 
+Router(config)#aaa authentication login default group tacacs+ local
+
+Router(config)#line vty 0 4
+Router(config-line)#login authentication default 
+Router(config-line)#exit
+
+==================================================================================
+TESTING 
+=============
+
+CLIENT PC
+=============
+OPEN CMD===>
+
+C:\>ping 192.168.90.1
+
+Pinging 192.168.90.1 with 32 bytes of data:
+
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.90.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+C:\>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: sneha
+Password: 
+R1>en
+Password: 
+R1#
+=========================================================================================
+======================================================================================
+1.BASIC IP SETTINGS IN ALL DEVICES AS PER DIAGRAM.
+
+2.RADIUS SERVER CONFIGURATION
+
+SERVICE==ON
+CLIENT NAME=R1
+CLIENT IP===192.168.90.1(ROUTER IP)
+SECRET==ANY VALUE==WE HAVE USED  <ccnpsecurity>
+SERVER TYPE==RADIUS
+
+===>ADD
+------------------------------------------
+USERNAME=rajdeep
+PASSWORD=123456
+
+===>ADD
+============================================================================================
+RADIUS CLIENT CONFIGURATION
+===============================
+1.BASIC IP SETTINGS
+
+2.
+
+Router(config)#hostname R1
+R1(config)#enable password ccna
+Router(config)#username rupak password 123456
+
+Router(config)#radius-server host 192.168.90.3
+Router(config)#radius-server key ccnpsecurity
+
+Router(config)#aaa new-model 
+Router(config)#aaa authentication login default group radius local
+
+Router(config)#line vty 0 4
+Router(config-line)#login authentication default 
+Router(config-line)#exit
+
+==================================================================================
+TESTING 
+=============
+
+CLIENT PC
+=============
+OPEN CMD===>
+
+C:\>ping 192.168.90.1
+
+Pinging 192.168.90.1 with 32 bytes of data:
+
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.90.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+C:\>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: rajdeep
+Password: 
+R1>en
+Password: 
+R1#
+=============================================================================================
+TACACS+>>>RADIUS>>>LOCAL USER DATABASE
+==========================================
+
+1. TACACS+ SERVER CONFIGURATION
+
+2.RADIUS SERVER CONFIGURATION
+
+3.TACACS+ & RADIUS CLIENT CONFIGURATION
+============================================
+1.BASIC IP SETTINGS
+
+2.
+
+Router(config)#hostname R1
+R1(config)#enable password ccna
+Router(config)#username rupak password 123456
+
+3.Router(config)#tacacs-server host 192.168.90.2
+Router(config)#tacacs-server key ccnasecurity
+
+4.Router(config)#radius-server host 192.168.90.3
+Router(config)#radius-server key ccnpsecurity
+
+5.
+Router(config)#aaa new-model 
+aaa authentication login default group TACAcs+ group radius local
+
+6.Router(config)#line vty 0 4
+Router(config-line)#login authentication default 
+Router(config-line)#exit
+============================================================================================
+TESTING
+===========
+C:\>ping 192.168.90.1
+
+Pinging 192.168.90.1 with 32 bytes of data:
+
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+Reply from 192.168.90.1: bytes=32 time<1ms TTL=255
+
+Ping statistics for 192.168.90.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>telnet 192.168.90.1
+Trying 192.168.90.1 ...Open
+
+
+User Access Verification
+
+Username: snehaUsername:
+Password: 
+R1>en
+Password: 
+R1#
+------------------------------------------------------------------------
