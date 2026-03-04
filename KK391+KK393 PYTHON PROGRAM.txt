@@ -1,0 +1,71 @@
+WAP TO FIND THE GIVEN NUMBER IS POSITIVE OR NEGATIVE
+====================================================
+a=int(input("Enter any Number:-"))
+
+if a>0:
+    print("The number is Positive")
+elif a<0:
+    print("The number is negative:")
+else:
+    print("The number is Zero")
+
+======================================================================================================================================================================================================
+WAP TO FIND THE GIVEN NUMBER IS ODD OR EVEN
+====================================================
+
+
+a=int(input("Enter any Number:-"))
+
+if a %2 == 0:
+    print("The number is Even")
+else:
+    print("The number is Odd")
+
+============================================================================================================================
+# Python Program to find the area of triangle
+
+a = float(input('Enter first side: '))
+b = float(input('Enter second side: '))
+c = float(input('Enter third side: '))
+
+s = (a + b + c) / 2
+
+area = (s*(s-a)*(s-b)*(s-c)) ** 0.5
+print('The area of the triangle is %0.2f' %area)
+
+==================================================================================
+WAP TO SWAP THE VAIABLE 
+
+x = input('Enter value of x: ')
+y = input('Enter value of y: ')
+
+# create a temporary variable and swap the values
+#temp = x
+#x = y
+#y = temp
+
+x,y=y,x
+
+print(x)
+print(y)
+
+==================================================================================
+# Program to generate a random number between 0 and 100
+
+import random
+
+print(random.randint(0,100))
+==================================================================================
+# Multiplication table (from 1 to 10) in Python
+
+num =int(input("Enter a Number:-"))  
+
+
+# To take input from the user
+# num = int(input("Display multiplication table of? "))
+
+# Iterate 10 times from i = 1 to 10
+for i in range(1, 13):
+   print(num, 'x', i, '=', num*i)
+
+=================================================================================
